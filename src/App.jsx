@@ -1,7 +1,6 @@
 import {RouterProvider, createBrowserRouter} from 'react-router-dom';
 import './App.css'
 import Dashboard from './pages/Dashboard'
-import Sign from './pages/Sign'
 import Home from './pages/Home'
 import Log from './pages/Log';
 import Utilisateur from './pages/Utilisateur'
@@ -14,10 +13,6 @@ function App() {
     {
       path:"/Utilisateur",
       element:<Utilisateur />
-    },
-    {
-      path:"/Sign",
-      element:<Sign />
     },
     {
       path:"/Dashboard",
