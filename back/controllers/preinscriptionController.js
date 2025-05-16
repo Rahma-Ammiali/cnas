@@ -112,9 +112,7 @@ const validerPreinscription = (req,res) =>{
                 place_restantes:0 })
             
     }
-    // const updateSql = `
-    // UPDATE preinscriptions SET valide = TRUE WHERE id= ? ;
-    // UPDATE classes SET nbr_places = nbr_places - 1 WHERE nom_classe = ? ;`
+    
     const updatePreinscription = `
     UPDATE preinscriptions SET valide = TRUE WHERE id=?`;
     db.query(updatePreinscription,[id_preinscription],(err2,result2) =>{
@@ -125,14 +123,25 @@ const validerPreinscription = (req,res) =>{
             if(err3 )return res.status(500).json({error:"erreur lors de la mise a jour "})
         res.json({
             status:"validee",
-        place_restantes:nbr_places -1});
+            place_restantes:nbr_places -1});
     })
         
     })
 })
 }
+const getPlacesRestantes =(req,res) =>{
+    const sql = `SELECT nom_classe , nbr_places FROM classes`;
+    db.query(sql,(err,results)=>{
+        if(err){
+            console.error("erreur recuperation des places restantes ",err)
+            return res.status(500).json({error:"erreur serveur"})
+        }
+        res.status(200).json(results);
+    })
+}
 module.exports = {
     enregistrerInfosPreinscription,
     getPreinscriptionNonValidees,
-    validerPreinscription
+    validerPreinscription,
+    getPlacesRestantes,
 };

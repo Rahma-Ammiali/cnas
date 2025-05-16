@@ -23,9 +23,9 @@ const Preinscription = () => {
   }
   return (
 
-    <Side>
-       <div className='w-80vw'>
-       <div className='w-[90%] h-[90vh] bg-[#E4F0F9] rounded relative'>
+    <Side >
+       <div className='w-80vw '>
+       <div className='w-[100%] h-[90vh] bg-[#EDF4F9] shadow-xl border border-gray-200 rounded-xl relative'>
       <h1 className='text-[35px] text-[#00428C] font-bold flex justify-center'>Préinscription</h1>
       <Steps step={step} />
       
