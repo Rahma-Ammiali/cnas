@@ -7,6 +7,9 @@ const enfantRoutes = require("./routes/enfantRoutes");
 const preinscriptionRoutes= require("./routes/preinscriptionRoutes");
 const utilisateurRoutes = require("./routes/utilisateurRoutes")
 const eventRoutes = require("./routes/eventRoutes")
+const classesRoutes = require("./routes/classesRoutes")
+const enAttenteRoutes = require("./routes/enAttenteRoutes")
+
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -17,6 +20,8 @@ app.use("/api/enfant",enfantRoutes);
 app.use("/api/preinscription",preinscriptionRoutes)
 app.use("/api/utilisateurs",utilisateurRoutes)
 app.use("/api/events",eventRoutes)
+app.use("/api/classes",classesRoutes)
+app.use("/api/enAttente",enAttenteRoutes)
 
 
 app.post('/login',(req,res)=>{

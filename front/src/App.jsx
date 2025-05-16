@@ -8,6 +8,7 @@ import EnAttente from './pages/EnAttente';
 import Utilisateur from './pages/Utilisateur';
 import Acceuil from './pages/Acceuil';
 import Evenement from './pages/Evenement';
+import DetailsModal from './components/DetailsModal';
 
 function App() {
   const router = createBrowserRouter([
@@ -42,6 +43,10 @@ function App() {
     {
       path:"/Evenement",
       element:<Evenement />
+    },
+    {
+      path:"/DetailsModal",
+      element:<DetailsModal />
     }
     
   ])

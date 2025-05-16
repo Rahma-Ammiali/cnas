@@ -24,7 +24,7 @@ const saveEvent = (req,res) =>{
 const getEvent = (req,res)=>{
     const sql =`SELECT titre AS title , date AS start , couleur AS backgroundColor,TRUE AS allDay FROM evenements`
     db.query(sql,(err,result) =>{
-        if(err){1
+        if(err){
             console.error("erreur select :",err);
             return res.status(500).json({error:"erreur serveur"})
         }

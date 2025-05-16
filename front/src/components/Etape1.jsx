@@ -6,6 +6,26 @@ const Etape1 = ({nextStep,setFormData,formData}) => {
     const [numSecurite,setNumSecurite] = useState("");
     const [enfantSelectionne , setEnfantSelectionne] = useState(null);
     const [enfants , setEnfants] = useState([]);
+    const calculerAge = (date_naissance) =>{
+        const birthDate = new Date(date_naissance);
+                if (isNaN(birthDate.getTime())){
+                    console.error("date de naissance invalide :",date_naissance);
+                    return null;
+                }
+                const adjustedDate = new Date(
+                    birthDate.getUTCFullYear(),
+    
+                    birthDate.getUTCMonth(),
+                    birthDate.getUTCDate()
+                )
+                const today = new Date();
+                let age = today.getFullYear() - adjustedDate.getFullYear();
+                const monthDiff= today.getMonth()-adjustedDate.getMonth();
+                if(monthDiff <0 || (monthDiff === 0 && today.getDate() <adjustedDate.getDate())){
+                    age--;
+                }
+                return age;
+      }
     const rechercheEnfants = async () =>{
         try{
             const response = await fetch(`http://localhost:5000/api/enfant/${numSecurite}`);
@@ -50,11 +70,13 @@ const Etape1 = ({nextStep,setFormData,formData}) => {
                     </div>
                     </div>
                        <ul>
-                        {enfants.map((child , index)=>(
-                            <li key={index}
+                        {enfants.map((child)=>(
+                            <li key={child.id}
                             className={` w-[40%] rounded p-2 m-4 text-[white] cursor-pointer ${enfantSelectionne===child ? 'bg-[#00428C]' :'bg-[#006DB8]'  }`}
                             onClick={()=> handleSelect(child)}>
-                                {child.nom} {child.prenom} {child.date_naissance}
+                                <p>Nom : {child.nom} </p> 
+                                <p>Prénom : {child.prenom}</p>
+                                <p>Age : {calculerAge(child.date_naissance)}</p>
                                 
                             </li>
                             ))}

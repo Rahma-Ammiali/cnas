@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Side from '../components/Side'
 import { FaRegEye ,FaRegEyeSlash  } from "react-icons/fa";
 
-const Utilisateur = () => {7
+const Utilisateur = () => {
   const [showPassword,setShowPassword] = useState(false);
   const [formData,setFormData] = useState({
     nom:'',
@@ -99,7 +99,7 @@ const Utilisateur = () => {7
                     className=' relative bg-[#DAEAF4] w-[70%] p-4 rounded-md focus:outline-none focus:border-[#006DB8]' 
                     
                      />
-                     <span className='cursor-pointer absolute right-5' onClick={ () => setShowPassword(!showPassword)}> {showPassword ? <FaRegEyeSlash /> : <FaRegEye /> }</span>
+                     <span className='cursor-pointer absolute right-5' onClick={ () => setShowPassword(!showPassword)}> {showPassword ?  <FaRegEye />:<FaRegEyeSlash />  }</span>
                    </div>
                    <button type='submit' className='absolute right-5 top-95 bg-[#00428C] text-[white] py-2 px-4 rounded-lg cursor-pointer'>Enregistrer</button>
                    <button onClick={() => setFormData({nom:'',numAgent:'',role:'',password:''})} className='absolute right-40 top-95 bg-[gray] text-[white] py-2 px-4 rounded-lg cursor-pointer'>Annuler</button>

@@ -1,4 +1,4 @@
-import React, { use, useState } from 'react'
+import React, {useState } from 'react'
 
 const Etape3 = ({prevStep,formData,setFormData}) => {
   const[handicap,setHandicap] =useState("non")
@@ -122,6 +122,7 @@ const Etape3 = ({prevStep,formData,setFormData}) => {
           handleChange(e);
         }}
         className='py-1 px-2 bg-[white] border-2 border-[#006DB8] rounded-md inline-block w-[10%] '>
+          <option value=" ">---</option>
           <option value="non">Non</option>
           <option value="oui">Oui</option>
         </select>
@@ -141,6 +142,7 @@ const Etape3 = ({prevStep,formData,setFormData}) => {
           handleChange(e);
         }}
         className='py-1 px-2 bg-[white] border-2 border-[#006DB8] rounded-md inline-block w-[10%] '>
+          <option value=" ">---</option>
           <option value="non">Non</option>
           <option value="oui">Oui</option>
         </select>

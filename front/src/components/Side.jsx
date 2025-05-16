@@ -27,7 +27,7 @@ const Side = ({children}) => {
     <div className='flex'>
         {/* sidebar */}
         <div
-        className={`${open ? 'lg:w-[13vw] md:w-[20vw] sm:w-[25vw]' :'w-[8%]'} p-[1.5%] pt-0 duration-300 h-screen bg-white drop-shadow-xl relative`}
+        className={`${open ? 'lg:w-[13vw] md:w-[20vw] sm:w-[25vw]' :'w-[8%]'} p-[1.5%] pt-0 duration-300 h-[100vh]  bg-white drop-shadow-xl relative`}
         >
             {/* toggle button  */}
             <img src={toggle} className={`absolute cursor-pointer -right-3 rounded-full top-9 ${open ? 'w-7' : 'w-6'} border-2 border-[#00428C]  ${!open && 'rotate-180'}`}
