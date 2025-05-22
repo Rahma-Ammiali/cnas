@@ -131,8 +131,19 @@ const validerPreinscription = (req,res) =>{
     })
 })
 }
+const getPlacesRestantes =(req,res) =>{
+    const sql = `SELECT nom_classe , nbr_places FROM classes`;
+    db.query(sql,(err,results)=>{
+        if(err){
+            console.error("erreur recuperation des places restantes ",err)
+            return res.status(500).json({error:"erreur serveur"})
+        }
+        res.status(200).json(results);
+    })
+}
 module.exports = {
     enregistrerInfosPreinscription,
     getPreinscriptionNonValidees,
-    validerPreinscription
+    validerPreinscription,
+    getPlacesRestantes
 };
