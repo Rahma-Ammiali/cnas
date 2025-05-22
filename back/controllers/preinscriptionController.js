@@ -143,5 +143,9 @@ module.exports = {
     enregistrerInfosPreinscription,
     getPreinscriptionNonValidees,
     validerPreinscription,
+<<<<<<< HEAD
     getPlacesRestantes,
+=======
+    getPlacesRestantes
+>>>>>>> recuperation-modifs
 };

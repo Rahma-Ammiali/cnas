@@ -2,6 +2,7 @@ import React, { useEffect,useState } from 'react'
 import Side from '../components/Side'
 import DetailsModal from '../components/DetailsModal';
 const EnAttente = () => {
+  const [classeSelectionnee,setClasseSelectionnee] = useState('Tous');
   const [preinscription,SetPreinscription] = useState([]);
   const [status,setStatus] = useState({});
   const [selectedId,setSelectedId]=useState(null)
@@ -77,7 +78,17 @@ const EnAttente = () => {
   }
   useEffect(()=>{
     fetchPlacesRestantes();
+<<<<<<< HEAD
   },[])
+=======
+  },[]);
+  const getFilteredPreinscriptions = () =>{
+    if(classeSelectionnee === 'Tous'){
+      return preinscription;
+    }
+    return preinscription.filter(e => e.classe === classeSelectionnee);
+  }
+>>>>>>> recuperation-modifs
   
 
   return (
@@ -95,8 +106,33 @@ const EnAttente = () => {
         ))}
         </div>
       </div>
+<<<<<<< HEAD
       <div className='overflow-hidden'>
       <div className='max-h-[70vh] overflow-y-auto border-gray-200 border rounded-xl '>
+=======
+      <div>
+        <div className='w-[100%] flex gap-5 mb-3 '> 
+          <button
+          className={`${classeSelectionnee === 'Tous' ? 'text-[#006DB8] font-bold text-xl decoration-solid underline' : 'text-gray-500 text-xl'} cursor-pointer`}
+          onClick={()=> setClasseSelectionnee('Tous')}
+          >
+            Tous
+          </button>
+          {['Petite section','Moyenne section','Grande section'].map(classe =>(
+            <button
+            key={classe}
+            className={`${classeSelectionnee === classe ? 'text-[#006DB8] font-bold text-xl decoration-solid underline' : 'text-gray-500 text-xl'} cursor-pointer`}
+            onClick={()=>setClasseSelectionnee(classe)}
+            >
+              {classe}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className='overflow-hidden'>
+      <div className='max-h-[60vh] overflow-y-auto border-gray-200 border rounded-xl '>
+>>>>>>> recuperation-modifs
       <table className=' w-full' >
           <tr className=' border-gray-200 border shadow-md bg-[#FEFDFF]'>
             <th className='w-1/6  px-4 py-2 '>nom</th>
@@ -108,8 +144,13 @@ const EnAttente = () => {
             <th className='w-1/6 px-4 py-2 '>action</th>
           </tr>
         <tbody>
+<<<<<<< HEAD
           {
             preinscription.map((e) => (
+=======
+          
+            {getFilteredPreinscriptions().map((e) => (
+>>>>>>> recuperation-modifs
               <tr className='border border-gray-200 w-[100%]   '>
                 <td className='w-1/6 px-4 py-2 text-center '>{e.nom}</td>
                 <td className='w-1/6 px-4 py-2 text-center '>{e.prenom}</td>
