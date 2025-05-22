@@ -78,9 +78,6 @@ const EnAttente = () => {
   }
   useEffect(()=>{
     fetchPlacesRestantes();
-<<<<<<< HEAD
-  },[])
-=======
   },[]);
   const getFilteredPreinscriptions = () =>{
     if(classeSelectionnee === 'Tous'){
@@ -88,7 +85,6 @@ const EnAttente = () => {
     }
     return preinscription.filter(e => e.classe === classeSelectionnee);
   }
->>>>>>> recuperation-modifs
   
 
   return (
@@ -106,10 +102,6 @@ const EnAttente = () => {
         ))}
         </div>
       </div>
-<<<<<<< HEAD
-      <div className='overflow-hidden'>
-      <div className='max-h-[70vh] overflow-y-auto border-gray-200 border rounded-xl '>
-=======
       <div>
         <div className='w-[100%] flex gap-5 mb-3 '> 
           <button
@@ -132,7 +124,6 @@ const EnAttente = () => {
 
       <div className='overflow-hidden'>
       <div className='max-h-[60vh] overflow-y-auto border-gray-200 border rounded-xl '>
->>>>>>> recuperation-modifs
       <table className=' w-full' >
           <tr className=' border-gray-200 border shadow-md bg-[#FEFDFF]'>
             <th className='w-1/6  px-4 py-2 '>nom</th>
@@ -144,13 +135,8 @@ const EnAttente = () => {
             <th className='w-1/6 px-4 py-2 '>action</th>
           </tr>
         <tbody>
-<<<<<<< HEAD
-          {
-            preinscription.map((e) => (
-=======
           
             {getFilteredPreinscriptions().map((e) => (
->>>>>>> recuperation-modifs
               <tr className='border border-gray-200 w-[100%]   '>
                 <td className='w-1/6 px-4 py-2 text-center '>{e.nom}</td>
                 <td className='w-1/6 px-4 py-2 text-center '>{e.prenom}</td>
