@@ -9,7 +9,7 @@ const utilisateurRoutes = require("./routes/utilisateurRoutes")
 const eventRoutes = require("./routes/eventRoutes")
 const classesRoutes = require("./routes/classesRoutes")
 const enAttenteRoutes = require("./routes/enAttenteRoutes")
-
+const dossiersRoutes = require("./routes/dossiersRoutes")
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -22,7 +22,7 @@ app.use("/api/utilisateurs",utilisateurRoutes)
 app.use("/api/events",eventRoutes)
 app.use("/api/classes",classesRoutes)
 app.use("/api/enAttente",enAttenteRoutes)
-
+app.use("/api/dossiers",dossiersRoutes)
 
 app.post('/login',(req,res)=>{
     console.log("req body " ,req.body)

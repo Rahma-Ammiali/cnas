@@ -9,6 +9,7 @@ import Utilisateur from './pages/Utilisateur';
 import Acceuil from './pages/Acceuil';
 import Evenement from './pages/Evenement';
 import DetailsModal from './components/DetailsModal';
+import DossiersDetails from './pages/DossiersDetails';
 
 function App() {
   const router = createBrowserRouter([
@@ -30,7 +31,16 @@ function App() {
     },
     {
       path:"/Dossiers",
-      element:<Dossiers />
+      children : [
+        {
+          index:true,
+          element:<Dossiers />
+        },
+        {
+          path:":id",
+          element:<DossiersDetails />
+        }
+      ]
     },
     {
       path:"/Utilisateur",
@@ -47,7 +57,7 @@ function App() {
     {
       path:"/DetailsModal",
       element:<DetailsModal />
-    }
+    },
     
   ])
   return (
