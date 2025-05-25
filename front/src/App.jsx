@@ -9,6 +9,7 @@ import SuiviPedagogique from "./pages/SuiviPedagogique"
 import Utilisateur from "./pages/Utilisateur"
 import Evenement from "./pages/Evenement"
 import Statistiques from "./pages/Statistiques"
+import PiecesJointes from './components/piecesjointes';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/enAttente" element={<EnAttente />} />
         <Route path="/dossiers" element={<Dossiers />} />
         <Route path="/dossiers/:id" element={<DossiersDetails />} />
+        <Route path="/pieces-jointes/:dossierId" element={<PiecesJointes />} />
         <Route path="/suivi-pedagogique/:id" element={<SuiviPedagogique />} />
         <Route path="/utilisateur" element={<Utilisateur />} />
         <Route path="/evenement" element={<Evenement />} />

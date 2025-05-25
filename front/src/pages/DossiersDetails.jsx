@@ -139,16 +139,19 @@ const DossierDetails = () => {
             </div>
 
             <div className="flex justify-end gap-4 mt-2">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow cursor-pointer">
-                Pièces jointes
-              </button>
-              <button
-                onClick={() => navigate(`/suivi-pedagogique/${id}`)}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow cursor-pointer"
-              >
-                Suivi Psychopédagogique
-              </button>
-            </div>
+  <button
+    onClick={() => navigate(`/pieces-jointes/${id}`)}
+    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow cursor-pointer"
+  >
+    Pièces jointes
+  </button>
+  <button
+    onClick={() => navigate(`/suivi-pedagogique/${id}`)}
+    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow cursor-pointer"
+  >
+    Suivi Psychopédagogique
+  </button>
+</div>
           </div>
         </div>
       </div>
