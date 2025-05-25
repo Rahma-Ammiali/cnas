@@ -8,6 +8,7 @@ import DossiersDetails from "./pages/DossiersDetails"
 import SuiviPedagogique from "./pages/SuiviPedagogique"
 import Utilisateur from "./pages/Utilisateur"
 import Evenement from "./pages/Evenement"
+import Statistiques from "./pages/Statistiques"
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/suivi-pedagogique/:id" element={<SuiviPedagogique />} />
         <Route path="/utilisateur" element={<Utilisateur />} />
         <Route path="/evenement" element={<Evenement />} />
+        <Route path="/statistiques" element={<Statistiques />} />
       </Routes>
     </BrowserRouter>
   )

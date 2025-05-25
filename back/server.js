@@ -11,6 +11,7 @@ const classesRoutes = require("./routes/classesRoutes")
 const enAttenteRoutes = require("./routes/enAttenteRoutes")
 const dossiersRoutes = require("./routes/dossiersRoutes")
 const suiviPedagogiqueRoutes = require("./routes/suiviPedagogiqueRoutes")
+const statistiquesRoutes = require("./routes/statistiquesRoutes")
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -22,9 +23,10 @@ app.use("/api/preinscription",preinscriptionRoutes)
 app.use("/api/utilisateurs",utilisateurRoutes)
 app.use("/api/events",eventRoutes)
 app.use("/api/classes",classesRoutes)
-app.use("/api/enAttente",enAttenteRoutes)
+app.use("/api/enattente",enAttenteRoutes)
 app.use("/api/dossiers",dossiersRoutes)
-app.use("/api/suivi-pedagogique", suiviPedagogiqueRoutes)
+app.use("/api/suivi",suiviPedagogiqueRoutes)
+app.use("/api/statistiques", statistiquesRoutes)
 
 app.post('/login',(req,res)=>{
     console.log("req body " ,req.body)
@@ -42,7 +44,16 @@ app.post('/login',(req,res)=>{
     })
 })
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT,() => {
-    console.log(`serveur demarré sur le port ${PORT}`);
+// Gestion des erreurs globale
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ 
+        error: "Une erreur est survenue sur le serveur",
+        details: err.message 
+    });
+});
+
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
