@@ -10,6 +10,67 @@ const Dossiers = () => {
   const [sortOrder, setSortOrder] = useState('asc');
   const navigate = useNavigate();
 
+  const fetchDossiers = (section) => {
+    const url = section === 'Tous' 
+      ? "http://localhost:5000/api/Dossiers/valides"
+      : `http://localhost:5000/api/Dossiers/valides?section=${encodeURIComponent(section)}`;
+
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        setDossiers(data);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  useEffect(() => {
+    fetchDossiers(classeSelectionnee);
+  }, [classeSelectionnee]);
+
+  const handleDetails = (id) => {
+    navigate(`/dossiers/${id}`)
+  }
+
+  const handleSort = (newSortBy) => {
+    if (sortBy === newSortBy) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(newSortBy);
+      setSortOrder('asc');
+    }
+  };
+
+  const getFilteredAndSortedEnfants = () => {
+    let filtered = dossiers;
+
+    // Filtrage par recherche
+    if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
+      filtered = filtered.filter(e => 
+        e.nom.toLowerCase().includes(searchLower) ||
+        e.prenom.toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Tri
+    const sorted = [...filtered].sort((a, b) => {
+      if (sortBy === 'age') {
+        const ageA = calculerAge(a.date_naissance) || 0;
+        const ageB = calculerAge(b.date_naissance) || 0;
+        return sortOrder === 'asc' ? ageA - ageB : ageB - ageA;
+      } else if (sortBy === 'nom') {
+        const nameA = `${a.nom} ${a.prenom}`.toLowerCase();
+        const nameB = `${b.nom} ${b.prenom}`.toLowerCase();
+        return sortOrder === 'asc' 
+          ? nameA.localeCompare(nameB)
+          : nameB.localeCompare(nameA);
+      }
+      return 0;
+    });
+
+    return sorted;
+  }
+
   const calculerAge = (date_naissance) => {
     const birthDate = new Date(date_naissance);
     if (isNaN(birthDate.getTime())) {
@@ -28,91 +89,6 @@ const Dossiers = () => {
       age--;
     }
     return age;
-  }
-
-  const estDansSection = (age, section) => {
-    switch (section) {
-      case 'Petite section':
-        return age >= 2 && age <= 3;
-      case 'Moyenne section':
-        return age >= 4 && age < 5;
-      case 'Grande section':
-        return age >= 5 && age <= 6;
-      case 'Tous':
-        return true;
-      default:
-        return false;
-    }
-  }
-
-  useEffect(() => {
-    fetch("http://localhost:5000/api/Dossiers/valides")
-      .then(res => res.json())
-      .then(data => {
-        // Calculer l'âge pour chaque enfant une seule fois
-        const dossiersAvecAge = data.map(enfant => ({
-          ...enfant,
-          age: calculerAge(enfant.date_naissance)
-        }));
-        setDossiers(dossiersAvecAge);
-      })
-      .catch((err) => console.error(err));
-  }, [])
-
-  const handleDetails = (id) => {
-    navigate(`/dossiers/${id}`)
-  }
-
-  const handleSort = (newSortBy) => {
-    if (sortBy === newSortBy) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(newSortBy);
-      setSortOrder('asc');
-    }
-  };
-
-  const getFilteredAndSortedEnfants = () => {
-    let filtered = dossiers;
-
-    // Filtrage par classe basé sur l'âge
-    if (classeSelectionnee !== 'Tous') {
-      filtered = filtered.filter(e => estDansSection(e.age, classeSelectionnee));
-    }
-
-    // Filtrage par recherche
-    if (searchTerm) {
-      const searchLower = searchTerm.toLowerCase();
-      filtered = filtered.filter(e => 
-        e.nom.toLowerCase().includes(searchLower) ||
-        e.prenom.toLowerCase().includes(searchLower)
-      );
-    }
-
-    // Tri
-    const sorted = [...filtered].sort((a, b) => {
-      if (sortBy === 'age') {
-        const ageA = a.age || 0;
-        const ageB = b.age || 0;
-        return sortOrder === 'asc' ? ageA - ageB : ageB - ageA;
-      } else if (sortBy === 'nom') {
-        const nameA = `${a.nom} ${a.prenom}`.toLowerCase();
-        const nameB = `${b.nom} ${b.prenom}`.toLowerCase();
-        return sortOrder === 'asc' 
-          ? nameA.localeCompare(nameB)
-          : nameB.localeCompare(nameA);
-      }
-      return 0;
-    });
-
-    return sorted;
-  }
-
-  const getSectionParAge = (age) => {
-    if (age >= 2 && age <= 3) return 'Petite section';
-    if (age >= 4 && age < 5) return 'Moyenne section';
-    if (age >= 5 && age <= 6) return 'Grande section';
-    return 'Non défini';
   }
 
   return (
@@ -163,7 +139,7 @@ const Dossiers = () => {
             >
               Tous
             </button>
-            {['Petite section', 'Moyenne section', 'Grande section'].map(classe => (
+            {['Petite Section', 'Moyenne Section', 'Grande Section'].map(classe => (
               <button
                 key={classe}
                 className={`${classeSelectionnee === classe ? 'text-[#006DB8] font-bold text-xl decoration-solid underline' : 'text-gray-500 text-xl'} cursor-pointer`}
@@ -190,16 +166,17 @@ const Dossiers = () => {
               </thead>
               <tbody>
                 {getFilteredAndSortedEnfants().map((e) => (
-                  <tr key={e.id} className='border border-gray-200 w-[100%] hover:bg-gray-50'>
+                  <tr key={`${e.id}-${e.date_depot}`} className='border border-gray-200 w-[100%] hover:bg-gray-50'>
                     <td className='w-1/6 px-4 py-2 text-center'>{e.nom}</td>
                     <td className='w-1/6 px-4 py-2 text-center'>{e.prenom}</td>
-                    <td className='w-1/6 px-4 py-2 text-center'>{e.age}</td>
-                    <td className='w-1/6 px-4 py-2 text-center'>{getSectionParAge(e.age)}</td>
+                    <td className='w-1/6 px-4 py-2 text-center'>{calculerAge(e.date_naissance)}</td>
+                    <td className='w-1/6 px-4 py-2 text-center'>{e.classe}</td>
                     <td className='w-1/6 px-4 py-2 text-center'>{e.sexe}</td>
                     <td className='w-1/6 px-4 py-2 text-center'>
                       <button
-                        className='bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded shadow-sm cursor-pointer'
-                        onClick={() => handleDetails(e.id)}>
+                        onClick={() => handleDetails(e.id)}
+                        className='bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600'
+                      >
                         Voir plus
                       </button>
                     </td>

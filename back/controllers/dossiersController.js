@@ -1,6 +1,19 @@
 const db = require('../db')
 
 const recupererEnfantsValides = (req,res)=>{
+    const { section } = req.query; // Récupérer la section depuis les paramètres de requête
+    
+    let sectionCondition = '';
+    if (section) {
+        if (section === 'Petite Section') {
+            sectionCondition = 'AND TIMESTAMPDIFF(YEAR, e.date_naissance, CURDATE()) <= 3';
+        } else if (section === 'Moyenne Section') {
+            sectionCondition = 'AND TIMESTAMPDIFF(YEAR, e.date_naissance, CURDATE()) = 4';
+        } else if (section === 'Grande Section') {
+            sectionCondition = 'AND TIMESTAMPDIFF(YEAR, e.date_naissance, CURDATE()) >= 5';
+        }
+    }
+
     const sql = `
     SELECT 
         e.id,
@@ -8,12 +21,16 @@ const recupererEnfantsValides = (req,res)=>{
         e.prenom,
         e.date_naissance,
         e.sexe,
-        p.classe,
+        CASE 
+            WHEN TIMESTAMPDIFF(YEAR, e.date_naissance, CURDATE()) <= 3 THEN 'Petite Section'
+            WHEN TIMESTAMPDIFF(YEAR, e.date_naissance, CURDATE()) = 4 THEN 'Moyenne Section'
+            ELSE 'Grande Section'
+        END as classe,
         p.valide,
         p.date_depot
     FROM enfants e
     INNER JOIN preinscriptions p ON e.id = p.id_enfant
-    WHERE p.valide = 1
+    WHERE p.valide = 1 ${sectionCondition}
     ORDER BY e.nom, e.prenom, p.date_depot DESC`;
     
     db.query(sql,(err,results)=>{
@@ -34,7 +51,11 @@ const getDossierById = (req,res)=>{
         e.prenom,
         e.date_naissance,
         e.sexe,
-        p.classe,
+        CASE 
+            WHEN TIMESTAMPDIFF(YEAR, e.date_naissance, CURDATE()) <= 3 THEN 'Petite Section'
+            WHEN TIMESTAMPDIFF(YEAR, e.date_naissance, CURDATE()) = 4 THEN 'Moyenne Section'
+            ELSE 'Grande Section'
+        END as classe,
         p.handicap,
         p.handicap_details,
         p.maladie_chronique,
