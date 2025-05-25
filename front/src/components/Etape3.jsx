@@ -51,135 +51,172 @@ const Etape3 = ({prevStep,formData,setFormData}) => {
     
   }
   return (
-    <div>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-3 p-5' >
-        <div className='flex justify-between align-center' >
-        <label htmlFor="assurance_mere_ou_employeur">Assurance de la mere ou employeur : </label>
-        <input 
-        type="text" 
-        name='assurance_mere_ou_employeur' 
-        value={formData.assurance_mere_ou_employeur}
-        onChange={handleChange}
-        required
-        className='py-1 px-2 bg-[white] border-2 border-[#006DB8] rounded-md inline-block w-[50%]'/>
+    <div className="w-full max-w-4xl mx-auto p-6">
+      <form onSubmit={handleSubmit} className='space-y-6 bg-white p-8 rounded-lg shadow-md border border-gray-200'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+          {/* Left Column */}
+          <div className='space-y-4'>
+            <div className='flex flex-col'>
+              <label htmlFor="assurance_mere_ou_employeur" className='text-gray-700 font-medium mb-1'>Assurance de la mere ou employeur :</label>
+              <input 
+                type="text" 
+                name='assurance_mere_ou_employeur' 
+                value={formData.assurance_mere_ou_employeur}
+                onChange={handleChange}
+                required
+                className='py-2 px-4 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full'/>
+            </div>
+
+            <div className='flex flex-col'>
+              <label className='text-gray-700 font-medium mb-1'>Tarif Préférentiel</label>
+              <input 
+                type="text" 
+                name="tarif_preferentiel" 
+                value={formData.tarif_preferentiel}
+                onChange={handleChange}
+                required
+                className='py-2 px-4 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full'/>
+            </div>
+
+            <div className='flex flex-col'>
+              <label className='text-gray-700 font-medium mb-1'>Num Téléphone Pere</label>
+              <input 
+                type="text" 
+                name="tel_pere" 
+                value={formData.tel_pere}
+                onChange={handleChange}
+                required
+                className='py-2 px-4 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full'/>
+            </div>
+
+            <div className='flex flex-col'>
+              <label className='text-gray-700 font-medium mb-1'>Num Téléphone Mere</label>
+              <input 
+                type="text" 
+                name="tel_mere" 
+                value={formData.tel_mere}
+                onChange={handleChange}
+                required
+                className='py-2 px-4 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full'/>
+            </div>
+
+            <div className='flex flex-col'>
+              <label className='text-gray-700 font-medium mb-1'>Adresse</label>
+              <input 
+                type="text" 
+                name="adresse" 
+                value={formData.adresse}
+                onChange={handleChange}
+                required
+                className='py-2 px-4 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full'/>
+            </div>
+          </div>
+
+          {/* Right Column */}
+          <div className='space-y-4'>
+            <div className='flex flex-col'>
+              <label className='text-gray-700 font-medium mb-1'>Année Scolaire</label>
+              <input 
+                type="text" 
+                name="annee_scolaire" 
+                value={formData.annee_scolaire}
+                onChange={handleChange}
+                required
+                className='py-2 px-4 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full'/>
+            </div>
+
+            <div className='flex flex-col'>
+              <label className='text-gray-700 font-medium mb-1'>Situation Handicap</label>
+              <div className='flex items-center gap-4'>
+                <select 
+                  name="handicap" 
+                  value={formData.handicap || "non"} 
+                  onChange={(e)=>{
+                    setHandicap(e.target.value);
+                    handleChange(e);
+                  }}
+                  className='py-2 px-4 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-24'>
+                  <option value=" ">---</option>
+                  <option value="non">Non</option>
+                  <option value="oui">Oui</option>
+                </select>
+                {handicap === "oui" && (
+                  <input 
+                    type="text" 
+                    name="handicap_details" 
+                    placeholder='Détails handicap' 
+                    onChange={handleChange}
+                    required
+                    className='py-2 px-4 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 flex-1'/>
+                )}
+              </div>
+            </div>
+
+            <div className='flex flex-col'>
+              <label className='text-gray-700 font-medium mb-1'>Maladie Chronique</label>
+              <div className='flex items-center gap-4'>
+                <select 
+                  name="maladie_chronique" 
+                  value={formData.maladieChronique || "non"} 
+                  onChange={(e)=>{
+                    setMaladieChronique(e.target.value);
+                    handleChange(e);
+                  }}
+                  className='py-2 px-4 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-24'>
+                  <option value=" ">---</option>
+                  <option value="non">Non</option>
+                  <option value="oui">Oui</option>
+                </select>
+                {maladieChronique === "oui" && (
+                  <input 
+                    type="text" 
+                    name="maladie_details" 
+                    placeholder='Détails Maladie chronique' 
+                    onChange={handleChange}
+                    required
+                    className='py-2 px-4 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 flex-1'/>
+                )}
+              </div>
+            </div>
+
+            <div className='flex flex-col'>
+              <label className='text-gray-700 font-medium mb-1'>Correspondant</label>
+              <input 
+                type="text" 
+                name="correspondant" 
+                value={formData.correspondant}
+                onChange={handleChange}
+                className='py-2 px-4 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full'/>
+            </div>
+
+            <div className='flex flex-col'> 
+              <label className='text-gray-700 font-medium mb-1'>Date De Dépot De La Demande</label>
+              <input 
+                type="date" 
+                name="date_depot"
+                value={formData.date_depot} 
+                onChange={handleChange}
+                required
+                className='py-2 px-4 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full'/>
+            </div> 
+          </div>
         </div>
-        <div className='flex justify-between align-center'>
-        <label>Tarif Préférentiel</label>
-        <input 
-        type="text" 
-        name="tarif_preferentiel" 
-        value={formData.tarif_preferentiel}
-        onChange={handleChange}
-        required
-        className='py-1 px-2 bg-[white] border-2 border-[#006DB8] rounded-md inline-block w-[50%]'  />
+
+        <div className='flex justify-between pt-6'>
+          <button
+            onClick={prevStep}
+            className='bg-[#00428C] hover:bg-[#006DB8] text-white font-medium py-2 px-6 rounded-lg transition duration-200'
+          >
+            Précédent
+          </button>
+          <button 
+            type='submit' 
+            className='bg-[#00428C] hover:bg-[#006DB8] text-white font-medium py-2 px-6 rounded-lg transition duration-200'
+          >
+            Enregistrer
+          </button>
         </div>
-        <div className='flex justify-between align-center'>
-        <label>Num Téléphone Pere </label>
-        <input 
-        type="text" 
-        name="tel_pere" 
-        value={formData.tel_pere}
-        onChange={handleChange}
-        required
-        className='py-1 px-2 bg-[white] border-2 border-[#006DB8] rounded-md inline-block w-[50%]'  />
-        </div>
-        <div className='flex justify-between align-center'>
-        <label>Num Téléphone Mere</label>
-        <input 
-        type="text" 
-        name="tel_mere" 
-        value={formData.tel_mere}
-        onChange={handleChange}
-        required
-        className='py-1 px-2 bg-[white] border-2 border-[#006DB8] rounded-md inline-block w-[50%]'  />
-        </div>
-        <div className='flex justify-between align-center'>
-        <label>Adresse </label>
-        <input 
-        type="text" 
-        name="adresse" 
-        value={formData.adresse}
-        onChange={handleChange}
-        required
-        className='py-1 px-2 bg-[white] border-2 border-[#006DB8] rounded-md inline-block w-[50%]' />
-        </div>
-        <div className='flex justify-between align-center'>
-        <label>Année Scolaire </label>
-        <input 
-        type="text" 
-        name="annee_scolaire" 
-        value={formData.annee_scolaire}
-        onChange={handleChange}
-        required
-        className='py-1 px-2 bg-[white] border-2 border-[#006DB8] rounded-md inline-block w-[50%]' />
-        </div>
-        <div className='flex justify-between align-center'>
-        <label >Situation Handicap</label>
-        <select 
-        name="handicap" value={formData.handicap || "non"} 
-        onChange={(e)=>{
-          setHandicap(e.target.value);
-          handleChange(e);
-        }}
-        className='py-1 px-2 bg-[white] border-2 border-[#006DB8] rounded-md inline-block w-[10%] '>
-          <option value=" ">---</option>
-          <option value="non">Non</option>
-          <option value="oui">Oui</option>
-        </select>
-        {handicap === "oui" && (
-          <input type="text" name="handicap_details" 
-          placeholder='détails handicap' 
-          onChange={handleChange}
-          required
-          className='py-1 px-2 bg-[white] border-2 border-[#006DB8] rounded-md inline-block w-[50%]' />
-        )}
-        </div>
-        <div className='flex justify-between align-center'>
-        <label>Maladie Chronique </label>
-        <select name="maladie_chronique" value={formData.maladieChronique || "non"} 
-        onChange={(e)=>{
-          setMaladieChronique(e.target.value);
-          handleChange(e);
-        }}
-        className='py-1 px-2 bg-[white] border-2 border-[#006DB8] rounded-md inline-block w-[10%] '>
-          <option value=" ">---</option>
-          <option value="non">Non</option>
-          <option value="oui">Oui</option>
-        </select>
-        {maladieChronique === "oui" && (
-          <input type="text" name="maladie_details" 
-          placeholder='détails Maladie chronique' 
-          onChange={handleChange}
-          required
-          className='py-1 px-2 bg-[white] border-2 border-[#006DB8] rounded-md inline-block w-[50%]' />
-        )}
-        </div>
-        <div className='flex justify-between align-center'>
-        <label>Correspondant</label>
-        <input type="text" name="correspondant" 
-        value={formData.correspondant}
-        onChange={handleChange}
-        className='py-1 px-2 bg-[white] border-2 border-[#006DB8] rounded-md inline-block w-[50%]' />
-        </div>
-        <div className='flex justify-between align-center'> 
-        <label>Date De Dépot De La Demande </label>
-        <input type="date" name="date_depot"
-        value={formData.date_depot} onChange={handleChange}
-        required
-        className='py-1 px-2 bg-[white] border-2 border-[#006DB8] rounded-md inline-block w-[50%]' />
-        </div> 
-        <button
-        onClick={prevStep}
-         className='absolute left-15 bottom-6 bg-[#00428C] text-[white] py-3 px-5 rounded-md cursor-pointer'
-         >
-          Previous
-        </button>
-        <button 
-        type='submit' className='absolute right-15 bottom-6 bg-[#00428C] text-[white] py-3 px-5 rounded-md cursor-pointer'
-         >Enregistrer
-         </button>
       </form>
-     
     </div>
   )
 }

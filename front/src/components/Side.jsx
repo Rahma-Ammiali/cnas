@@ -32,7 +32,7 @@ const Side = ({children}) => {
                     alt='toggle sidebar'
                     onClick={() => setOpen(!open)}
                 />
-                <div className="overflow-y-scroll h-full pb-10">
+                <div className=" h-full pb-10">
                     <div className='items-center mt-2 mb-6 justify-center flex duration-500 ease-in-out'>
                         <img 
                             className={`cursor-pointer mr-2 ${open ? 'w-10' : 'w-12'} ${!open && "rotate-360deg"}`}

@@ -43,7 +43,7 @@ const Utilisateur = () => {
     <div>
         <Side>
           <div className='w-[100%] h-[100%] flex justify-center items-center'>
-            <div className='w-[60%] h-[80%] shadow-2xl rounded-xl p-8 '>
+            <div className='w-[60%] h-full shadow-2xl rounded-xl p-8 '>
               <h1 className='font-bold text-center text-2xl text-[#00428C]'>Ajouter un nouveau utilisateur : </h1>
                 <form onSubmit={handleSubmit} className='flex flex-col gap-6 relative '> 
                    <div className='flex items-center justify-between mt-6'>

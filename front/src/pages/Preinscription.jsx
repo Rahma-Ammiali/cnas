@@ -7,35 +7,37 @@ import Etape1 from '../components/Etape1'
 import Etape2 from '../components/Etape2'
 import Etape3 from '../components/Etape3'
 
-
 const Preinscription = () => {
-  const [step , setStep ] = useState(1)
+  const [step, setStep] = useState(1)
   const [formData, setFormData] = useState({
-    numSecurite : "", 
-    enfantSelectionne : null, 
-    infosSupplementaires : {}
+    numSecurite: "", 
+    enfantSelectionne: null, 
+    infosSupplementaires: {}
   })
-  const nextStep = () =>{
-    if(step<3) setStep(step+1);
-  }
-  const prevStep = ()=>{
-    if(step>1) setStep(step-1)
-  }
-  return (
 
-    <Side >
-       <div className='w-80vw '>
-       <div className='w-[100%] h-[90vh] bg-[#EDF4F9] shadow-xl border border-gray-200 rounded-xl relative'>
-      <h1 className='text-[35px] text-[#00428C] font-bold flex justify-center'>Préinscription</h1>
-      <Steps step={step} />
-      
-      {step === 1 && <Etape1 nextStep={nextStep} setFormData={setFormData} formData={formData}/>}
-      {step === 2 && <Etape2 nextStep={nextStep} prevStep={prevStep} formData={formData} />}
-      {step === 3 && <Etape3 prevStep={prevStep} formData={formData} setFormData={setFormData}/>}
-      
+  const nextStep = () => {
+    if(step < 3) setStep(step + 1);
+  }
+
+  const prevStep = () => {
+    if(step > 1) setStep(step - 1)
+  }
+
+  return (
+    <Side>
+      <div className='w-full h-[90vh] overflow-hidden'>
+        <div className='w-full h-full bg-white shadow-xl border border-gray-200 rounded-xl relative flex flex-col'>
+          <h1 className='text-[35px] text-[#00428C] font-bold flex justify-center pt-4'>Préinscription</h1>
+          <Steps step={step} />
+          
+          {/* Scrollable content area */}
+          <div className='flex-1 overflow-y-auto px-4 pb-4'>
+            {step === 1 && <Etape1 nextStep={nextStep} setFormData={setFormData} formData={formData}/>}
+            {step === 2 && <Etape2 nextStep={nextStep} prevStep={prevStep} formData={formData} />}
+            {step === 3 && <Etape3 prevStep={prevStep} formData={formData} setFormData={setFormData}/>}
+          </div>
+        </div>
       </div>
-      </div>
-  
     </Side>
   )
 }

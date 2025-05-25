@@ -106,19 +106,19 @@ const Statistiques = () => {
 
     return (
         <Side>
-            <div className="p-6">
+            <div className="p-2">
                 <h1 className="text-2xl font-bold text-[#00428C] mb-6">
                     Statistiques de la Crèche
                 </h1>
                 
-                <div className="bg-white rounded-lg shadow-lg p-4 mb-6">
+                <div className="bg-white rounded-lg shadow-lg border border-gray-100 p-4 mb-6">
                     <h2 className="text-xl font-semibold text-[#00428C]">
                         Nombre total d'enfants inscrits : {stats.totalEnfants}
                     </h2>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
-                    <div className="bg-white rounded-lg shadow-lg p-4">
+                    <div className="bg-white rounded-lg shadow-lg p-4 border border-gray-100" >
                         <h2 className="text-lg font-semibold text-[#00428C] mb-4">
                             Répartition par genre
                         </h2>
@@ -138,7 +138,7 @@ const Statistiques = () => {
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-lg shadow-lg p-4">
+                    <div className="bg-white rounded-lg shadow-lg p-4 border border-gray-100">
                         <h2 className="text-lg font-semibold text-[#00428C] mb-4">
                             Répartition par section
                         </h2>

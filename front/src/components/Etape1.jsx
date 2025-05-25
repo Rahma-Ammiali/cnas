@@ -72,7 +72,7 @@ const Etape1 = ({nextStep,setFormData,formData}) => {
                        <ul>
                         {enfants.map((child)=>(
                             <li key={child.id}
-                            className={` w-[40%] rounded p-2 m-4 text-[white] cursor-pointer ${enfantSelectionne===child ? 'bg-[#00428C]' :'bg-[#006DB8]'  }`}
+                            className={`w-[30%] rounded-lg p-2 m-4 text-white cursor-pointer transition-all duration-300 transform ${enfantSelectionne === child ? 'bg-[#00428C] shadow-md hover:bg-[#003366]' : 'bg-[#006DB8] shadow-sm hover:bg-[#005A9E]'} hover:shadow-xl hover:-translate-y-1 active:scale-95 active:shadow-inner active:bg-[#002244] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50`}
                             onClick={()=> handleSelect(child)}>
                                 <p>Nom : {child.nom} </p> 
                                 <p>Prénom : {child.prenom}</p>

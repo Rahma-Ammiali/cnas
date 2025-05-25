@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Side from '../components/Side'
 
-
 const Evenement = () => {
     const [newEvent,setNewEvent] = useState({title:'',date:''})
     const [formData,setFormData] = useState({
@@ -73,75 +72,96 @@ const Evenement = () => {
     }
   return (
     <Side>
-        <h1 className='text-[#00428C] font-bold text-[30px]'>formulaire des evenements et des capacitées :</h1>
-        <div className='flex justify-center items-center gap-7'>
-        <form 
-        onSubmit={handleAddEvent}
-        className='h-[60vh] shadow-2xl rounded-xl w-[30vw] mt-12 p-6 flex flex-col gap-5 flex justify-center items-center'
-        >
-            <label htmlFor="Evenement"
-            className='text-[#00428C] font-bold text-2xl'>Evènement :</label>
-            <input 
-            type="text" 
-            name="title"
-            value={newEvent.title}
-            onChange={(e) => setNewEvent({...newEvent , title:e.target.value})}
-            className='bg-[#DAEAF4] w-[70%] p-4 rounded-md focus:outline-none focus:border-[#006DB8]' 
-             />
-             <label htmlFor="Date"
-             className='text-[#00428C] font-bold text-2xl'>Date :</label>
-             <input type="date" name="date" 
-             value={newEvent.date}
-             onChange={(e) => setNewEvent({...newEvent,date:e.target.value})} 
-             className=' relative bg-[#DAEAF4] w-[70%] p-4 rounded-md focus:outline-none focus:border-[#006DB8]' 
-             />
-             <div className='w-[100%] flex justify-center'>
-             <button 
-             type='submit'
-             className='w-[50%] bg-[#00428C] text-[white] py-2 px-4 rounded-lg cursor-pointer mt-5'
-             >Enregistrer</button>
-             </div>
-        </form>
-        <form onSubmit={handleSubmit}
-        className='h-[70vh] shadow-2xl rounded-xl w-[30vw] mt-12 p-6 flex flex-col gap-5 flex justify-center items-center'>
-            <label htmlFor="classe-1"
-                className='text-[#00428C] font-bold text-2xl'
-                >Classe1</label>
-            <select name="nom_classe"
-            value={formData.nom_classe}
-            onChange={handleChange}
-            className='bg-[#DAEAF4] w-[70%] p-4 rounded-md focus:outline-none focus:border-[#006DB8]' 
-            required>
-                <option value=""> -- choisir une classe --</option>
-                <option value="petite section">petite section</option>
-                <option value="moyenne section">moyenne section</option>
-                <option value="grande section">grande section</option>
-            </select>
-            <label htmlFor="nbr1"
-                className='text-[#00428C] font-bold text-2xl'
-            >nombre de places : </label>
-            <input type="number" 
-            name='nbr_places'
-            value={formData.nbr_places}
-            onChange={handleChange}
-            className='bg-[#DAEAF4] w-[70%] p-4 rounded-md focus:outline-none focus:border-[#006DB8]' 
-            required
-            />
-            <label htmlFor="annee"
-                className='text-[#00428C] font-bold text-2xl'
-            >annee scolaire : </label>
-            <input type="text" 
-            name='annee_scolaire'
-            value={formData.annee_scolaire}
-            onChange={handleChange}
-            placeholder='ex : 2024 - 2025'
-            className='bg-[#DAEAF4] w-[70%] p-4 rounded-md focus:outline-none focus:border-[#006DB8]' 
-            required
-            />
-            <button type='submit'
-                className='w-[50%] bg-[#00428C] text-[white] py-2 px-4 rounded-lg cursor-pointer mt-5'
-            >Enregistrer</button>
-        </form>
+        <div className="overflow-hidden h-[100vh]">
+            <h1 className='text-3xl font-bold text-[#00428C] mb-6'>Formulaire des evenements et des capacitées</h1>
+            <div className='flex flex-col lg:flex-row justify-center items-start gap-8 w-full'>
+                {/* Events Form */}
+                <form 
+                    onSubmit={handleAddEvent}
+                    className=' border border-gray-200 w-full lg:w-1/2 xl:w-2/5 bg-white shadow-xl rounded-xl p-8 flex flex-col gap-6'
+                >
+                    <h2 className='text-2xl font-bold text-[#00428C] text-center mb-4'>Evènement</h2>
+                    <div className='w-full'>
+                        <label htmlFor="Evenement" className='block text-lg font-semibold text-[#00428C] mb-2'>Titre :</label>
+                        <input 
+                            type="text" 
+                            name="title"
+                            value={newEvent.title}
+                            onChange={(e) => setNewEvent({...newEvent , title:e.target.value})}
+                            className='w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200' 
+                        />
+                    </div>
+                    <div className='w-full'>
+                        <label htmlFor="Date" className='block text-lg font-semibold text-[#00428C] mb-2'>Date :</label>
+                        <input 
+                            type="date" 
+                            name="date" 
+                            value={newEvent.date}
+                            onChange={(e) => setNewEvent({...newEvent,date:e.target.value})} 
+                            className='w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200' 
+                        />
+                    </div>
+                    <button 
+                        type='submit'
+                        className='w-full max-w-xs mx-auto bg-[#00428C] hover:bg-[#006DB8] text-white font-medium py-3 px-6 rounded-lg transition duration-200 mt-4'
+                    >
+                        Enregistrer
+                    </button>
+                </form>
+
+                {/* Capacity Form */}
+                <form 
+                    onSubmit={handleSubmit}
+                    className='border h-[70vh] border-gray-200 w-full lg:w-1/2 xl:w-2/5 bg-white shadow-xl rounded-xl p-6 flex flex-col gap-4'
+                >
+                    
+                    <h2 className='text-2xl font-bold text-[#00428C] text-center '>Capacité des classes</h2>
+                    <div className='w-full'>
+                        <label htmlFor="classe-1" className='block text-lg font-semibold text-[#00428C] '>Classe :</label>
+                        <select 
+                            name="nom_classe"
+                            value={formData.nom_classe}
+                            onChange={handleChange}
+                            className='w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200'
+                            required
+                        >
+                            <option value=""> -- choisir une classe --</option>
+                            <option value="petite section">petite section</option>
+                            <option value="moyenne section">moyenne section</option>
+                            <option value="grande section">grande section</option>
+                        </select>
+                    </div>
+                    <div className='w-full'>
+                        <label htmlFor="nbr1" className='block text-lg font-semibold text-[#00428C] '>Nombre de places :</label>
+                        <input 
+                            type="number" 
+                            name='nbr_places'
+                            value={formData.nbr_places}
+                            onChange={handleChange}
+                            className='w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200'
+                            required
+                        />
+                    </div>
+                    <div className='w-full'>
+                        <label htmlFor="annee" className='block text-lg font-semibold text-[#00428C] '>Année scolaire :</label>
+                        <input 
+                            type="text" 
+                            name='annee_scolaire'
+                            value={formData.annee_scolaire}
+                            onChange={handleChange}
+                            placeholder='ex : 2024 - 2025'
+                            className='w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200'
+                            required
+                        />
+                    </div>
+                    <button 
+                        type='submit'
+                        className='w-full max-w-xs mx-auto bg-[#00428C] hover:bg-[#006DB8] text-white font-medium py-3 px-6 rounded-lg transition duration-200 mt-2'
+                    >
+                        Enregistrer
+                    </button>
+                </form>
+            </div>
         </div>
     </Side>
   )

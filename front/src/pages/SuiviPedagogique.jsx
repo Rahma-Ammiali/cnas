@@ -69,12 +69,12 @@ const SuiviPedagogique = () => {
 
   const StatutSelect = ({ field, value }) => {
     if (!isEditing) return (
-      <span className={`px-3 py-1 rounded text-white ${
-        value === 'Amélioration' ? 'bg-blue-500' :
-        value === 'Stagnation' ? 'bg-orange-500' :
-        value === 'Régression' ? 'bg-red-500' : 'bg-gray-500'
+      <span className={`px-3 py-1 rounded-full text-white text-sm font-medium ${
+        value === 'Amélioration' ? 'bg-green-500' :
+        value === 'Stagnation' ? 'bg-yellow-500' :
+        value === 'Régression' ? 'bg-red-500' : 'bg-gray-400'
       }`}>
-        {value || 'Non défini'}
+        {value || 'Non évalué'}
       </span>
     );
 
@@ -82,7 +82,7 @@ const SuiviPedagogique = () => {
       <select
         value={value || ''}
         onChange={(e) => handleChange(e, `statut_${field}`)}
-        className="border rounded px-2 py-1"
+        className="border border-gray-300 rounded-lg px-3 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
       >
         <option value="">Sélectionner</option>
         <option value="Amélioration">Amélioration</option>
@@ -94,16 +94,18 @@ const SuiviPedagogique = () => {
 
   const ObservationSection = ({ title, obsField, statutField }) => {
     return (
-      <div className="mb-6">
-        <div className="flex justify-between items-center mb-2">
-          <h3 className="text-lg font-semibold">{title} :</h3>
+      <div className="mb-6 p-4 bg-white rounded-lg shadow-sm border border-gray-100">
+        <div className="flex justify-between items-center mb-3">
+          <h3 className="text-lg font-semibold text-gray-700">{title}</h3>
           <StatutSelect field={statutField} value={suivi[`statut_${statutField}`]} />
         </div>
         <textarea
           value={suivi[obsField] || ''}
           onChange={(e) => handleChange(e, obsField)}
           disabled={!isEditing}
-          className="w-full p-2 border rounded min-h-[100px] bg-[#F0F8FF] focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={`w-full p-3 border rounded-lg min-h-[120px] focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+            isEditing ? 'bg-white border-gray-300' : 'bg-gray-50 border-gray-200'
+          }`}
           placeholder={isEditing ? "Saisir vos observations..." : "Aucune observation"}
         />
       </div>
@@ -112,63 +114,67 @@ const SuiviPedagogique = () => {
 
   return (
     <Side>
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-[#00428C]">Suivi Psychologique et pédagogique</h2>
-          <div className="space-x-4">
-            <button
-              onClick={() => isEditing ? handleSave() : setIsEditing(true)}
-              className={`px-4 py-2 rounded ${
-                isEditing ? 'bg-green-500 hover:bg-green-600' : 'bg-blue-500 hover:bg-blue-600'
-              } text-white`}
-            >
-              {isEditing ? 'Enregistrer' : 'Modifier'}
-            </button>
-            <button
-              onClick={handlePrint}
-              className="px-4 py-2 rounded bg-gray-500 hover:bg-gray-600 text-white"
-            >
-              Imprimer
-            </button>
+      <div className="h-[calc(100vh-80px)] flex flex-col">
+        <div className="p-6 bg-white border-b border-gray-200">
+          <div className="flex justify-between items-center max-w-6xl mx-auto">
+            <h2 className="text-2xl font-bold text-[#00428C]">Suivi Psychologique et pédagogique</h2>
+            <div className="space-x-3">
+              <button
+                onClick={() => isEditing ? handleSave() : setIsEditing(true)}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  isEditing ? 'bg-green-600 hover:bg-green-700' : 'bg-blue-600 hover:bg-blue-700'
+                } text-white shadow-sm`}
+              >
+                {isEditing ? 'Enregistrer' : 'Modifier'}
+              </button>
+              <button
+                onClick={handlePrint}
+                className="px-4 py-2 rounded-lg font-medium bg-gray-600 hover:bg-gray-700 text-white shadow-sm transition-colors"
+              >
+                Imprimer
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className="space-y-6">
-          <ObservationSection
-            title="Observations par rapport à l'adaptation de l'enfant à la CJE"
-            obsField="obs_adaptation"
-            statutField="adaptation"
-          />
-          
-          <ObservationSection
-            title="Observations par rapport à la relation aux autres enfants (socialisation)"
-            obsField="obs_socialisation"
-            statutField="socialisation"
-          />
-          
-          <ObservationSection
-            title="Observations par rapport à l'acquisition de l'autonomie dans la vie pratique"
-            obsField="obs_autonomie"
-            statutField="autonomie"
-          />
-          
-          <ObservationSection
-            title="Observations par rapport à l'acquisition des enseignements en pré mathématiques"
-            obsField="obs_premath"
-            statutField="premath"
-          />
-          
-          <ObservationSection
-            title="Observations par rapport à l'acquisition des enseignements en pré lecture"
-            obsField="obs_prelecture"
-            statutField="prelecture"
-          />
-          
-          <ObservationSection
-            title="Observations par rapport à l'acquisition des enseignements en pré écriture"
-            obsField="obs_preecriture"
-            statutField="preecriture"
-          />
+        <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
+          <div className="max-w-6xl mx-auto space-y-6">
+            <ObservationSection
+              title="Adaptation de l'enfant à la CJE"
+              obsField="obs_adaptation"
+              statutField="adaptation"
+            />
+            
+            <ObservationSection
+              title="Relation aux autres enfants (socialisation)"
+              obsField="obs_socialisation"
+              statutField="socialisation"
+            />
+            
+            <ObservationSection
+              title="Acquisition de l'autonomie dans la vie pratique"
+              obsField="obs_autonomie"
+              statutField="autonomie"
+            />
+            
+            <ObservationSection
+              title="Acquisition des enseignements en pré mathématiques"
+              obsField="obs_premath"
+              statutField="premath"
+            />
+            
+            <ObservationSection
+              title="Acquisition des enseignements en pré lecture"
+              obsField="obs_prelecture"
+              statutField="prelecture"
+            />
+            
+            <ObservationSection
+              title="Acquisition des enseignements en pré écriture"
+              obsField="obs_preecriture"
+              statutField="preecriture"
+            />
+          </div>
         </div>
       </div>
     </Side>
