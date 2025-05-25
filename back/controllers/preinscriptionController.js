@@ -82,10 +82,26 @@ const enregistrerInfosPreinscription = (req,res)=>{
 // Liste des preinscriptions non validées : 
 const getPreinscriptionNonValidees = (req,res)=>{
     const sql = `
-    SELECT p.id AS id_preinscription , e.nom , e.prenom , e.date_naissance , p.classe 
-    FROM preinscriptions p 
-    JOIN enfants e ON p.id_enfant = e.id 
-    WHERE p.valide = FALSE `;
+    SELECT DISTINCT 
+        p.id AS id_preinscription,
+        e.nom,
+        e.prenom,
+        e.date_naissance,
+        p.classe
+    FROM enfants e
+    INNER JOIN (
+        SELECT p1.*
+        FROM preinscriptions p1
+        INNER JOIN (
+            SELECT id_enfant, MAX(date_depot) as last_depot
+            FROM preinscriptions
+            WHERE valide = 0
+            GROUP BY id_enfant
+        ) p2 ON p1.id_enfant = p2.id_enfant AND p1.date_depot = p2.last_depot
+        WHERE p1.valide = 0
+    ) p ON e.id = p.id_enfant
+    ORDER BY e.nom, e.prenom`;
+
     db.query(sql,(err1,results) =>{
         if(err1){
             console.error("erreur lors de la recuperation :", err1);
@@ -96,38 +112,51 @@ const getPreinscriptionNonValidees = (req,res)=>{
 }
 //valider une preinscription : 
 const validerPreinscription = (req,res) =>{
-    const {id_preinscription , classe} = req.body; 
-    const checksql = `
-    SELECT 
-    nbr_places
-    FROM classes
-    WHERE nom_classe = ? `
-    db.query(checksql,[classe],(err,results) =>{
-        if(err) return res.status(500).json({error:"erreur serveur"});
-        if(results.length === 0) return res.status(400).json({error:"classe introuvable"})
-        const nbr_places = results[0].nbr_places
-        if (nbr_places <= 0 ){
-            return res.json({
-                status:"saturee",
-                place_restantes:0 })
-            
-    }
+    const {id_preinscription, classe} = req.body; 
     
-    const updatePreinscription = `
-    UPDATE preinscriptions SET valide = TRUE WHERE id=?`;
-    db.query(updatePreinscription,[id_preinscription],(err2,result2) =>{
-        if(err2) return res.status(500).json({error:"erreur serveur"});
-        const updateClasse = `
-        UPDATE classes SET nbr_places = nbr_places -1 WHERE nom_classe = ?`;
-        db.query(updateClasse,[classe],(err3,result3) =>{
-            if(err3 )return res.status(500).json({error:"erreur lors de la mise a jour "})
-        res.json({
-            status:"validee",
-            place_restantes:nbr_places -1});
-    })
+    // D'abord, vérifier les places disponibles
+    const checksql = `
+    SELECT nbr_places
+    FROM classes
+    WHERE nom_classe = ?`;
+    
+    db.query(checksql, [classe], (err, results) => {
+        if(err) return res.status(500).json({error:"erreur serveur"});
+        if(results.length === 0) return res.status(400).json({error:"classe introuvable"});
         
-    })
-})
+        const nbr_places = results[0].nbr_places;
+        if (nbr_places <= 0) {
+            return res.json({
+                status: "saturee",
+                place_restantes: 0
+            });
+        }
+
+        // Valider directement la préinscription
+        const validatePreinscription = `
+        UPDATE preinscriptions 
+        SET valide = TRUE
+        WHERE id = ?`;
+
+        db.query(validatePreinscription, [id_preinscription], (err2) => {
+            if(err2) return res.status(500).json({error:"erreur lors de la validation"});
+
+            // Mettre à jour le nombre de places dans la classe
+            const updateClasse = `
+            UPDATE classes 
+            SET nbr_places = nbr_places - 1 
+            WHERE nom_classe = ?`;
+
+            db.query(updateClasse, [classe], (err3) => {
+                if(err3) return res.status(500).json({error:"erreur lors de la mise à jour des places"});
+                
+                res.json({
+                    status: "validee",
+                    place_restantes: nbr_places - 1
+                });
+            });
+        });
+    });
 }
 const getPlacesRestantes =(req,res) =>{
     const sql = `SELECT nom_classe , nbr_places FROM classes`;

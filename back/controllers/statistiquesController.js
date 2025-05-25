@@ -3,9 +3,9 @@ const db = require('../db');
 const getStatistiques = (req, res) => {
     console.log('Début de la requête getStatistiques');
 
-    // Requête pour le total des enfants avec préinscription validée
+    // Requête pour le total des validations
     const queryTotal = `
-        SELECT COUNT(DISTINCT e.id) as total 
+        SELECT COUNT(*) as total 
         FROM enfants e 
         INNER JOIN preinscriptions p ON e.id = p.id_enfant 
         WHERE p.valide = 1
@@ -22,7 +22,7 @@ const getStatistiques = (req, res) => {
 
         // Requête pour la répartition par sexe
         const querySexe = `
-            SELECT e.sexe, COUNT(DISTINCT e.id) as nombre 
+            SELECT e.sexe, COUNT(*) as nombre 
             FROM enfants e
             INNER JOIN preinscriptions p ON e.id = p.id_enfant 
             WHERE p.valide = 1 AND e.sexe IS NOT NULL
@@ -46,7 +46,7 @@ const getStatistiques = (req, res) => {
                         WHEN TIMESTAMPDIFF(YEAR, e.date_naissance, CURDATE()) = 4 THEN 'Moyenne Section'
                         ELSE 'Grande Section'
                     END as tranche_age,
-                    COUNT(DISTINCT e.id) as nombre
+                    COUNT(*) as nombre
                 FROM enfants e
                 INNER JOIN preinscriptions p ON e.id = p.id_enfant 
                 WHERE p.valide = 1

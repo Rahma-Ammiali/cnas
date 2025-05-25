@@ -200,7 +200,7 @@ const Dossiers = () => {
                       <button
                         className='bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded shadow-sm cursor-pointer'
                         onClick={() => handleDetails(e.id)}>
-                        voir plus
+                        Voir plus
                       </button>
                     </td>
                   </tr>

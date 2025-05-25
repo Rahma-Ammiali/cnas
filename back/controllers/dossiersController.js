@@ -1,28 +1,20 @@
-const db = require('../db'
-)
+const db = require('../db')
+
 const recupererEnfantsValides = (req,res)=>{
-    const sql=`
-    SELECT DISTINCT
-    enf.id,
-    enf.nom,
-    enf.prenom,
-    enf.date_naissance,
-    enf.sexe,
-    pre.classe,
-    pre.valide
-    FROM enfants enf
-    LEFT JOIN (
-        SELECT p.*
-        FROM preinscriptions p
-        WHERE p.valide = 1
-        OR p.id IN (
-            SELECT MAX(id)
-            FROM preinscriptions
-            GROUP BY id_enfant
-        )
-    ) pre ON pre.id_enfant = enf.id
-    WHERE pre.valide = 1
-    ORDER BY enf.nom, enf.prenom`;
+    const sql = `
+    SELECT 
+        e.id,
+        e.nom,
+        e.prenom,
+        e.date_naissance,
+        e.sexe,
+        p.classe,
+        p.valide,
+        p.date_depot
+    FROM enfants e
+    INNER JOIN preinscriptions p ON e.id = p.id_enfant
+    WHERE p.valide = 1
+    ORDER BY e.nom, e.prenom, p.date_depot DESC`;
     
     db.query(sql,(err,results)=>{
         if(err) {
@@ -33,54 +25,53 @@ const recupererEnfantsValides = (req,res)=>{
     })
 }
 
-
 const getDossierById = (req,res)=>{
     const {id} = req.params;
-    const sql =`
+    const sql = `
     SELECT 
-      enf.id,
-      enf.nom,
-      enf.prenom,
-      enf.date_naissance,
-      enf.sexe,
-      pre.classe,
-      pre.handicap,
-      pre.handicap_details,
-      pre.maladie_chronique,
-      pre.maladie_details,
-      pre.assurance_mere_ou_employeur,
-      pre.tarif_preferentiel,
-      pre.annee_scolaire,
-      pre.adresse,
-      pere.nom AS nom_pere,
-      pere.prenom AS prenom_pere,
-      pere.telephone AS telephone_pere,
-      mere.nom AS nom_mere,
-      mere.prenom AS prenom_mere,
-      mere.telephone AS telephone_mere
-    FROM enfants enf
-    LEFT JOIN preinscriptions pre ON pre.id_enfant = enf.id
-    LEFT JOIN parents pere ON enf.id_pere = pere.id
-    LEFT JOIN parents mere ON enf.id_mere = mere.id
-    WHERE enf.id = ?
-    ORDER BY pre.date_depot DESC
-    LIMIT 1;
-    `;
+        e.id,
+        e.nom,
+        e.prenom,
+        e.date_naissance,
+        e.sexe,
+        p.classe,
+        p.handicap,
+        p.handicap_details,
+        p.maladie_chronique,
+        p.maladie_details,
+        p.assurance_mere_ou_employeur,
+        p.tarif_preferentiel,
+        p.annee_scolaire,
+        p.adresse,
+        p.date_depot,
+        pere.nom AS nom_pere,
+        pere.prenom AS prenom_pere,
+        pere.telephone AS telephone_pere,
+        mere.nom AS nom_mere,
+        mere.prenom AS prenom_mere,
+        mere.telephone AS telephone_mere
+    FROM enfants e
+    INNER JOIN preinscriptions p ON e.id = p.id_enfant
+    LEFT JOIN parents pere ON e.id_pere = pere.id
+    LEFT JOIN parents mere ON e.id_mere = mere.id
+    WHERE e.id = ? AND p.valide = 1
+    ORDER BY p.date_depot DESC`;
+
     db.query(sql,[id],(err,results)=>{
         if(err) {
             console.error('Erreur SQL:', err);
             return res.status(500).json({error:"erreur serveur"});
         }
         if(results.length === 0) return res.status(404).json({error:"dossier non trouvé"});
-        res.json(results[0]); // On renvoie le premier résultat seulement
+        res.json(results[0]);
     })
 }
 
 // Alias pour la compatibilité avec le frontend
 const getDossiersById = getDossierById;
 
-module.exports={
+module.exports = {
     recupererEnfantsValides,
     getDossierById,
     getDossiersById
-}
+};
