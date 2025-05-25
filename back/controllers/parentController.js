@@ -19,4 +19,5 @@ const getParentByChild = (req,res) => {
         }
     });
 };
+
 module.exports={getParentByChild} 

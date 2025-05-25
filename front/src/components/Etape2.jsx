@@ -5,7 +5,7 @@ const Etape2 = ({nextStep , prevStep , formData}) => {
   useEffect(()=>{
     const fetchParents = async ()=>{
       try{
-        const response = await fetch(`http://localhost:5000/api/enfant/parents/${formData.enfantSelectionne.id}`)
+        const response = await fetch(`http://localhost:5000/api/parents/${formData.enfantSelectionne.id}`)
         if(!response.ok){
           throw new Error('erreur lors de la recuperation des parents ')
         }

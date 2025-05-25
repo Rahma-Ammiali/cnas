@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const { getSuiviPedagogique, updateSuiviPedagogique, validerSuiviPedagogique } = require('../controllers/suiviPedagogiqueController');
+const suiviPedagogiqueController = require('../controllers/suiviPedagogiqueController');
 
-// Route pour obtenir le suivi pédagogique d'un enfant
-router.get('/:id_enfant', getSuiviPedagogique);
+// Route pour récupérer le suivi pédagogique d'un enfant
+router.get('/:id_enfant', suiviPedagogiqueController.getSuiviPedagogique);
 
-// Route pour mettre à jour le suivi pédagogique
-router.post('/:id_enfant', updateSuiviPedagogique);
+// Route pour mettre à jour ou créer un suivi pédagogique
+router.post('/:id_enfant', suiviPedagogiqueController.updateSuiviPedagogique);
 
-// Route pour valider le suivi pédagogique
-router.put('/:id_enfant/valider', validerSuiviPedagogique);
+// Route pour valider un suivi pédagogique
+router.put('/:id_enfant/valider', suiviPedagogiqueController.validerSuiviPedagogique);
 
 module.exports = router; 

@@ -1,39 +1,40 @@
 const db = require('../db')
 
 const recupererEnfantsValides = (req,res)=>{
-    const { section } = req.query; // Récupérer la section depuis les paramètres de requête
+    const { section } = req.query;
     
-    let sectionCondition = '';
-    if (section) {
-        if (section === 'Petite Section') {
-            sectionCondition = 'AND TIMESTAMPDIFF(YEAR, e.date_naissance, CURDATE()) <= 3';
-        } else if (section === 'Moyenne Section') {
-            sectionCondition = 'AND TIMESTAMPDIFF(YEAR, e.date_naissance, CURDATE()) = 4';
-        } else if (section === 'Grande Section') {
-            sectionCondition = 'AND TIMESTAMPDIFF(YEAR, e.date_naissance, CURDATE()) >= 5';
-        }
-    }
-
-    const sql = `
-    SELECT 
+    let sql = `
+    SELECT DISTINCT
         e.id,
         e.nom,
         e.prenom,
         e.date_naissance,
         e.sexe,
-        CASE 
-            WHEN TIMESTAMPDIFF(YEAR, e.date_naissance, CURDATE()) <= 3 THEN 'Petite Section'
-            WHEN TIMESTAMPDIFF(YEAR, e.date_naissance, CURDATE()) = 4 THEN 'Moyenne Section'
-            ELSE 'Grande Section'
-        END as classe,
+        p.classe,
         p.valide,
         p.date_depot
     FROM enfants e
-    INNER JOIN preinscriptions p ON e.id = p.id_enfant
-    WHERE p.valide = 1 ${sectionCondition}
-    ORDER BY e.nom, e.prenom, p.date_depot DESC`;
+    INNER JOIN (
+        SELECT p1.*
+        FROM preinscriptions p1
+        INNER JOIN (
+            SELECT id_enfant, MAX(date_depot) as last_depot
+            FROM preinscriptions
+            WHERE valide = 1
+            GROUP BY id_enfant
+        ) p2 ON p1.id_enfant = p2.id_enfant AND p1.date_depot = p2.last_depot
+        WHERE p1.valide = 1
+    ) p ON e.id = p.id_enfant`;
+
+    if (section && section !== 'Tous') {
+        sql += ` AND p.classe = ?`;
+    }
+
+    sql += ` ORDER BY e.nom, e.prenom`;
+
+    const queryParams = section && section !== 'Tous' ? [section] : [];
     
-    db.query(sql,(err,results)=>{
+    db.query(sql, queryParams, (err,results)=>{
         if(err) {
             console.error('Erreur SQL:', err);
             return res.status(500).json({error:"erreur serveur"})
@@ -52,9 +53,9 @@ const getDossierById = (req,res)=>{
         e.date_naissance,
         e.sexe,
         CASE 
-            WHEN TIMESTAMPDIFF(YEAR, e.date_naissance, CURDATE()) <= 3 THEN 'Petite Section'
+            WHEN TIMESTAMPDIFF(YEAR, e.date_naissance, CURDATE()) = 3 THEN 'Petite Section'
             WHEN TIMESTAMPDIFF(YEAR, e.date_naissance, CURDATE()) = 4 THEN 'Moyenne Section'
-            ELSE 'Grande Section'
+            WHEN TIMESTAMPDIFF(YEAR, e.date_naissance, CURDATE()) = 5 THEN 'Grande Section'
         END as classe,
         p.handicap,
         p.handicap_details,

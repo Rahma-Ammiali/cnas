@@ -14,7 +14,6 @@ const Etape1 = ({nextStep,setFormData,formData}) => {
                 }
                 const adjustedDate = new Date(
                     birthDate.getUTCFullYear(),
-    
                     birthDate.getUTCMonth(),
                     birthDate.getUTCDate()
                 )
@@ -28,15 +27,19 @@ const Etape1 = ({nextStep,setFormData,formData}) => {
       }
     const rechercheEnfants = async () =>{
         try{
-            const response = await fetch(`http://localhost:5000/api/enfant/${numSecurite}`);
+            const response = await fetch(`http://localhost:5000/api/enfants/${numSecurite}`);
             const data = await response.json();
-            setEnfants(data)
-            console.log("Fetched Data:", data);
-        }catch(error){
-            console.error("erreur lors de la recherche" , error)
+            if (data.error) {
+                console.error("Erreur:", data.error);
+                setEnfants([]);
+            } else {
+                setEnfants(data);
+                console.log("Enfants trouvés:", data);
+            }
+        } catch(error){
+            console.error("Erreur lors de la recherche:", error);
+            setEnfants([]);
         }
-            
-
     }
     const  handleSelect = (child) =>{
        setEnfantSelectionne(child);
