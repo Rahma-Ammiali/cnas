@@ -31,6 +31,9 @@ const SuiviPedagogique = () => {
   const fetchSuiviPedagogique = async () => {
     try {
       const response = await fetch(`http://localhost:5000/api/suivi-pedagogique/${id}`);
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération des données');
+      }
       const data = await response.json();
       if (data) {
         setFormData(data);
@@ -38,30 +41,37 @@ const SuiviPedagogique = () => {
       }
     } catch (error) {
       console.error('Erreur:', error);
+      alert('Erreur lors de la récupération des données');
     }
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     try {
       const response = await fetch(`http://localhost:5000/api/suivi-pedagogique/${id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          ...formData,
+          date_observation: formData.date_observation || new Date().toISOString().split('T')[0]
+        })
       });
 
-      if (response.ok) {
-        alert('Suivi pédagogique enregistré avec succès');
-        setIsEditing(false);
-        fetchSuiviPedagogique();
-      } else {
-        alert('Erreur lors de l\'enregistrement');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Erreur lors de l\'enregistrement');
       }
+
+      alert('Suivi pédagogique enregistré avec succès');
+      setIsEditing(false);
+      fetchSuiviPedagogique();
     } catch (error) {
       console.error('Erreur:', error);
-      alert('Erreur lors de l\'enregistrement');
+      alert(error.message || 'Erreur lors de l\'enregistrement');
     }
   };
 
@@ -74,11 +84,14 @@ const SuiviPedagogique = () => {
         }
       });
 
+      const responseData = await response.json();
+      
       if (response.ok) {
         alert('Suivi pédagogique validé avec succès');
         fetchSuiviPedagogique();
       } else {
-        alert('Erreur lors de la validation');
+        console.error('Erreur réponse:', responseData);
+        alert('Erreur lors de la validation: ' + (responseData.error || 'Erreur inconnue'));
       }
     } catch (error) {
       console.error('Erreur:', error);
@@ -145,24 +158,33 @@ const SuiviPedagogique = () => {
 
   return (
     <Side>
-      <div className="h-[calc(100vh-80px)] flex flex-col">
-        <div className="p-6 bg-white border-b border-gray-200">
-          <div className="flex justify-between items-center max-w-6xl mx-auto">
-            <h2 className="text-2xl font-bold text-[#00428C]">Suivi Psychologique et pédagogique</h2>
-            <div className="space-x-3">
-              <button
-                onClick={() => navigate(`/dossiers/${id}`)}
-                className="text-blue-600 hover:text-blue-800"
-              >
-                ← Retour au dossier
-              </button>
-              <div className="flex gap-4">
+      <div className="min-h-screen bg-gray-50">
+        {/* Header fixe */}
+        <div className="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 py-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+              {/* Titre et bouton retour */}
+              <div className="flex flex-col space-y-2">
+                <h2 className="text-2xl font-bold text-[#00428C]">
+                  Suivi Psychologique et pédagogique
+                </h2>
+                <button
+                  onClick={() => navigate(`/dossiers/${id}`)}
+                  className="text-blue-600 hover:text-blue-800 text-left"
+                >
+                  ← Retour au dossier
+                </button>
+              </div>
+
+              {/* Boutons d'action */}
+              <div className="flex flex-wrap gap-3">
                 <button
                   onClick={() => setIsEditing(!isEditing)}
                   className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                 >
                   {isEditing ? 'Annuler' : 'Modifier'}
                 </button>
+
                 {isEditing ? (
                   <button
                     onClick={handleSubmit}
@@ -183,19 +205,21 @@ const SuiviPedagogique = () => {
                     {statut_validation === 'Validé' ? '✓ Validé' : 'Valider'}
                   </button>
                 )}
+
+                <button
+                  onClick={handlePrint}
+                  className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+                >
+                  Imprimer
+                </button>
               </div>
-              <button
-                onClick={handlePrint}
-                className="px-4 py-2 rounded-lg font-medium bg-gray-600 hover:bg-gray-700 text-white shadow-sm transition-colors"
-              >
-                Imprimer
-              </button>
             </div>
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
-          <div className="max-w-6xl mx-auto space-y-6">
+        {/* Contenu défilable */}
+        <div className="max-w-7xl mx-auto px-4 py-6">
+          <div className="space-y-6">
             <ObservationSection
               title="Adaptation de l'enfant à la CJE"
               obsField="obs_adaptation"

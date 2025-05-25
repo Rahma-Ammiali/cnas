@@ -12,13 +12,13 @@ const Dossiers = () => {
 
   const fetchDossiers = (section) => {
     const url = section === 'Tous' 
-      ? "http://localhost:5000/api/Dossiers/valides"
-      : `http://localhost:5000/api/Dossiers/valides?section=${encodeURIComponent(section)}`;
+      ? "http://localhost:5000/api/dossiers/valides"
+      : `http://localhost:5000/api/dossiers/valides?section=${encodeURIComponent(section)}`;
 
     fetch(url)
       .then(res => res.json())
       .then(data => {
-        setDossiers(data);
+        setDossiers(data); // Plus de filtrage ici, on fait confiance au backend
       })
       .catch((err) => console.error(err));
   };
