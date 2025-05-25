@@ -10,6 +10,7 @@ const eventRoutes = require("./routes/eventRoutes")
 const classesRoutes = require("./routes/classesRoutes")
 const enAttenteRoutes = require("./routes/enAttenteRoutes")
 const dossiersRoutes = require("./routes/dossiersRoutes")
+const suiviPedagogiqueRoutes = require("./routes/suiviPedagogiqueRoutes")
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -23,6 +24,7 @@ app.use("/api/events",eventRoutes)
 app.use("/api/classes",classesRoutes)
 app.use("/api/enAttente",enAttenteRoutes)
 app.use("/api/dossiers",dossiersRoutes)
+app.use("/api/suivi-pedagogique", suiviPedagogiqueRoutes)
 
 app.post('/login',(req,res)=>{
     console.log("req body " ,req.body)
@@ -39,12 +41,6 @@ app.post('/login',(req,res)=>{
         
     })
 })
-
-
-
-
-
-
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT,() => {

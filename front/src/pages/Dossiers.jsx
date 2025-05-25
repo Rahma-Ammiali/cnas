@@ -6,8 +6,8 @@ const Dossiers = () => {
   const [classeSelectionnee, setClasseSelectionnee] = useState('Tous');
   const [dossiers, setDossiers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('nom'); // 'nom', 'age'
-  const [sortOrder, setSortOrder] = useState('asc'); // 'asc', 'desc'
+  const [sortBy, setSortBy] = useState('nom');
+  const [sortOrder, setSortOrder] = useState('asc');
   const navigate = useNavigate();
 
   const calculerAge = (date_naissance) => {
@@ -30,10 +30,32 @@ const Dossiers = () => {
     return age;
   }
 
+  const estDansSection = (age, section) => {
+    switch (section) {
+      case 'Petite section':
+        return age >= 2 && age <= 3;
+      case 'Moyenne section':
+        return age >= 4 && age < 5;
+      case 'Grande section':
+        return age >= 5 && age <= 6;
+      case 'Tous':
+        return true;
+      default:
+        return false;
+    }
+  }
+
   useEffect(() => {
     fetch("http://localhost:5000/api/Dossiers/valides")
       .then(res => res.json())
-      .then(data => setDossiers(data))
+      .then(data => {
+        // Calculer l'âge pour chaque enfant une seule fois
+        const dossiersAvecAge = data.map(enfant => ({
+          ...enfant,
+          age: calculerAge(enfant.date_naissance)
+        }));
+        setDossiers(dossiersAvecAge);
+      })
       .catch((err) => console.error(err));
   }, [])
 
@@ -43,10 +65,8 @@ const Dossiers = () => {
 
   const handleSort = (newSortBy) => {
     if (sortBy === newSortBy) {
-      // Si on clique sur le même critère, on inverse l'ordre
       setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     } else {
-      // Si on change de critère, on met par défaut en ordre ascendant
       setSortBy(newSortBy);
       setSortOrder('asc');
     }
@@ -55,9 +75,9 @@ const Dossiers = () => {
   const getFilteredAndSortedEnfants = () => {
     let filtered = dossiers;
 
-    // Filtrage par classe
+    // Filtrage par classe basé sur l'âge
     if (classeSelectionnee !== 'Tous') {
-      filtered = filtered.filter(e => e.classe === classeSelectionnee);
+      filtered = filtered.filter(e => estDansSection(e.age, classeSelectionnee));
     }
 
     // Filtrage par recherche
@@ -72,8 +92,8 @@ const Dossiers = () => {
     // Tri
     const sorted = [...filtered].sort((a, b) => {
       if (sortBy === 'age') {
-        const ageA = calculerAge(a.date_naissance) || 0;
-        const ageB = calculerAge(b.date_naissance) || 0;
+        const ageA = a.age || 0;
+        const ageB = b.age || 0;
         return sortOrder === 'asc' ? ageA - ageB : ageB - ageA;
       } else if (sortBy === 'nom') {
         const nameA = `${a.nom} ${a.prenom}`.toLowerCase();
@@ -86,6 +106,13 @@ const Dossiers = () => {
     });
 
     return sorted;
+  }
+
+  const getSectionParAge = (age) => {
+    if (age >= 2 && age <= 3) return 'Petite section';
+    if (age >= 4 && age < 5) return 'Moyenne section';
+    if (age >= 5 && age <= 6) return 'Grande section';
+    return 'Non défini';
   }
 
   return (
@@ -156,7 +183,7 @@ const Dossiers = () => {
                   <th className='w-1/6 px-4 py-2'>Nom</th>
                   <th className='w-1/6 px-4 py-2'>Prénom</th>
                   <th className='w-1/6 px-4 py-2'>Âge</th>
-                  <th className='w-1/6 px-4 py-2'>Classe</th>
+                  <th className='w-1/6 px-4 py-2'>Section</th>
                   <th className='w-1/6 px-4 py-2'>Sexe</th>
                   <th className='w-1/6 px-4 py-2'>Action</th>
                 </tr>
@@ -166,8 +193,8 @@ const Dossiers = () => {
                   <tr key={e.id} className='border border-gray-200 w-[100%] hover:bg-gray-50'>
                     <td className='w-1/6 px-4 py-2 text-center'>{e.nom}</td>
                     <td className='w-1/6 px-4 py-2 text-center'>{e.prenom}</td>
-                    <td className='w-1/6 px-4 py-2 text-center'>{calculerAge(e.date_naissance)}</td>
-                    <td className='w-1/6 px-4 py-2 text-center'>{e.classe}</td>
+                    <td className='w-1/6 px-4 py-2 text-center'>{e.age}</td>
+                    <td className='w-1/6 px-4 py-2 text-center'>{getSectionParAge(e.age)}</td>
                     <td className='w-1/6 px-4 py-2 text-center'>{e.sexe}</td>
                     <td className='w-1/6 px-4 py-2 text-center'>
                       <button

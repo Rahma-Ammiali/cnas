@@ -2,18 +2,33 @@ const db = require('../db'
 )
 const recupererEnfantsValides = (req,res)=>{
     const sql=`
-    SELECT
+    SELECT DISTINCT
     enf.id,
-    enf.nom ,
-    enf.prenom  , 
+    enf.nom,
+    enf.prenom,
     enf.date_naissance,
     enf.sexe,
-    pre.classe
-    FROM preinscriptions pre 
-    JOIN enfants enf ON pre.id_enfant = enf.id
-    WHERE pre.valide= 1`;
+    pre.classe,
+    pre.valide
+    FROM enfants enf
+    LEFT JOIN (
+        SELECT p.*
+        FROM preinscriptions p
+        WHERE p.valide = 1
+        OR p.id IN (
+            SELECT MAX(id)
+            FROM preinscriptions
+            GROUP BY id_enfant
+        )
+    ) pre ON pre.id_enfant = enf.id
+    WHERE pre.valide = 1
+    ORDER BY enf.nom, enf.prenom`;
+    
     db.query(sql,(err,results)=>{
-        if(err) return res.status(500).json({error:"erreur serveur"})
+        if(err) {
+            console.error('Erreur SQL:', err);
+            return res.status(500).json({error:"erreur serveur"})
+        }
         res.json(results)
     })
 }

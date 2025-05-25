@@ -81,6 +81,8 @@ const DossierDetails = () => {
           </button>
         </div>
 
+        <h2 className='text-[35px] text-[#00428C] font-bold mb-4'>Détails du Dossier</h2>
+
         <div className="grid grid-cols-1 gap-8">
           <div className="bg-white p-6 rounded-lg shadow">
             <h2 className="text-xl font-semibold mb-4">Information sur l'enfant :</h2>
@@ -150,7 +152,10 @@ const DossierDetails = () => {
             <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded">
               Pièces jointes
             </button>
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded">
+            <button
+              onClick={() => navigate(`/suivi-pedagogique/${id}`)}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
+            >
               Suivi Psychopédagogique
             </button>
           </div>
