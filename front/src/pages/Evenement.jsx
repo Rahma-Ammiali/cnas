@@ -74,7 +74,7 @@ const Evenement = () => {
 
     return (
         <Side>
-            <div className="min-h-screen bg-gradient-to-b from-white to-[#f0f7ff] p-6">
+            <div className="min-h-screen  p-6">
                 <div className="max-w-6xl mx-auto space-y-8">
                     <h1 className="text-3xl font-bold text-center">
                         <span className="bg-gradient-to-r from-[#00428C] to-[#006DB8] text-transparent bg-clip-text">
@@ -84,7 +84,7 @@ const Evenement = () => {
 
                     <div className="grid md:grid-cols-2 gap-8">
                         {/* Formulaire des événements */}
-                        <div className="bg-white rounded-2xl p-8 shadow-[0_10px_30px_rgba(8,_112,_184,_0.2)]">
+                        <div className="bg-white rounded-2xl p-8 shadow-[0_8px_30px_rgba(8,_112,_184,_0.2)]">
                             <div className="flex items-center gap-3 mb-6">
                                 <FaCalendarPlus className="w-6 h-6 text-[#00428C]" />
                                 <h2 className="text-xl font-semibold text-[#00428C]">

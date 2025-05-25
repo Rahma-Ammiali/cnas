@@ -95,7 +95,7 @@ const Dossiers = () => {
 
   return (
     <Side>
-      <div className="min-h-screen bg-gradient-to-b from-white to-[#f0f7ff] p-6">
+      <div className="min-h-screen p-6">
         <div className="max-w-7xl mx-auto space-y-8">
           <h2 className="text-3xl font-bold text-center">
             <span className="bg-gradient-to-r from-[#00428C] to-[#006DB8] text-transparent bg-clip-text">
@@ -103,7 +103,7 @@ const Dossiers = () => {
             </span>
           </h2>
 
-          <div className="bg-white rounded-xl p-6 shadow-[0_10px_30px_rgba(8,_112,_184,_0.2)]">
+          <div className="bg-white rounded-xl p-6 shadow-[0_4px_10px_rgba(8,_112,_184,_0.2)]">
             <div className="flex flex-col md:flex-row justify-between items-center gap-6">
               {/* Barre de recherche */}
               <div className="relative w-full md:w-1/3">

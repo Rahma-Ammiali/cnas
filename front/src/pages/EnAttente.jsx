@@ -137,7 +137,7 @@ const EnAttente = () => {
 
   return (
     <Side>
-      <div className="min-h-screen bg-gradient-to-b from-white to-[#f0f7ff] p-6">
+      <div className="min-h-screen  p-6">
         <div className="max-w-7xl mx-auto space-y-8">
           <h2 className="text-3xl font-bold text-center mb-8">
             <span className="bg-gradient-to-r from-[#00428C] to-[#006DB8] text-transparent bg-clip-text">
@@ -203,7 +203,7 @@ const EnAttente = () => {
             ))}
           </div>
 
-          <div className="bg-white rounded-2xl shadow-[0_10px_30px_rgba(8,_112,_184,_0.2)] overflow-hidden">
+          <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgba(8,_112,_184,_0.2)] overflow-hidden">
             <div className="max-h-[60vh] overflow-y-auto">
               <table className="w-full">
                 <thead>

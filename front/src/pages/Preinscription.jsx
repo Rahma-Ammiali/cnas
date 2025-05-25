@@ -25,9 +25,9 @@ const Preinscription = () => {
 
   return (
     <Side>
-      <div className="min-h-screen bg-gradient-to-b from-white to-[#f0f7ff] p-6">
+      <div className="min-h-screen  p-6">
         <div className="max-w-5xl mx-auto">
-          <div className='bg-white rounded-2xl shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)] overflow-hidden transform hover:scale-[1.01] transition-all duration-300'>
+          <div className='bg-white rounded-2xl shadow-[0_10px_50px_rgba(8,_112,_184,_0.2)] overflow-hidden transform hover:scale-[1.01] transition-all duration-300'>
             <div className='p-8'>
               <h1 className='text-4xl font-bold text-center mb-8'>
                 <span className="bg-gradient-to-r from-[#00428C] to-[#006DB8] text-transparent bg-clip-text">

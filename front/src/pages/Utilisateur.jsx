@@ -44,7 +44,7 @@ const Utilisateur = () => {
 
   return (
     <Side>
-      <div className="min-h-screen bg-gradient-to-b from-white to-[#f0f7ff] p-6">
+      <div className="min-h-screen  p-6">
         <div className="max-w-3xl mx-auto space-y-8">
           <h1 className="text-3xl font-bold text-center">
             <span className="bg-gradient-to-r from-[#00428C] to-[#006DB8] text-transparent bg-clip-text">

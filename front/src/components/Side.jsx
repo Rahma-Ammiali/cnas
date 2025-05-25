@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { IoLogOutOutline } from "react-icons/io5";
 import { CiUser, CiStopwatch, CiCalendarDate } from "react-icons/ci";
 import { FaRegPenToSquare, FaMoon, FaSun } from "react-icons/fa6";
@@ -14,6 +15,7 @@ const Side = ({children}) => {
     const [open, setOpen] = useState(true);
     const [isDarkMode, setIsDarkMode] = useState(false);
     const location = useLocation();
+    const navigate = useNavigate();
     const Menus = [
         {title: "Acceuil", icone: <GoHome className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Acceuil"},
         {title: "Préinscription", icone: <FaRegPenToSquare className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Preinscription"},
@@ -21,8 +23,27 @@ const Side = ({children}) => {
         {title: "Dossiers", icone: <BsFiles className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Dossiers"},
         {title: "Nouveau Utilisateur", icone: <CiUser className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Utilisateur"},
         {title: "Evenements et Places", icone: <CiCalendarDate className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Evenement"},
-        {title: "Statistiques", icone: <MdBarChart className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/statistiques"}
+        {title: "Statistiques", icone: <MdBarChart className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/statistiques"},
+
     ];
+                            {/* <button className={`
+                            w-full px-3 py-2.5 rounded-lg
+                            flex items-center gap-x-4
+                            text-red-600 hover:bg-red-50
+                            transition-all duration-300
+                            group
+                            ${!open && 'justify-center'}
+                        `}>
+                            <IoLogOutOutline className='w-5 h-5 transition-transform group-hover:scale-110'/>
+                            <span className={`
+                                font-medium text-sm
+                                transition-all duration-300
+                                whitespace-nowrap
+                                ${!open && 'hidden'}
+                            `}>
+                                Déconnexion
+                            </span>
+                        </button> */}
 
     return (
         <div className='flex min-h-screen bg-gray-50'>
@@ -33,7 +54,6 @@ const Side = ({children}) => {
                     shadow-[4px_0_6px_-1px_rgba(0,66,140,0.1)] 
                     fixed left-0 top-0 z-50
                     transition-all duration-300 ease-in-out
-                    overflow-hidden
                     flex flex-col
                 `}
             >
@@ -96,6 +116,8 @@ const Side = ({children}) => {
                                         : 'hover:bg-[#00428C]/5'
                                     }
                                     ${!open && 'justify-center'}
+                                    
+                                    
                                 `}>
                                     <span className="min-w-[24px] flex justify-center">
                                         {menu.icone}
@@ -154,7 +176,7 @@ const Side = ({children}) => {
                             )}
                         </button>
 
-                        <button className={`
+                        {/* <Link to="/" className={`
                             w-full px-3 py-2.5 rounded-lg
                             flex items-center gap-x-4
                             text-red-600 hover:bg-red-50
@@ -171,7 +193,37 @@ const Side = ({children}) => {
                             `}>
                                 Déconnexion
                             </span>
-                        </button>
+                        </Link>
+                         */}
+                         <button 
+                         onClick={()=>{
+                            const confirmLogout = window.confirm("voulez-vous vraiment vous déconnecter ?")
+                            if(confirmLogout) {
+                                navigate("/");
+                            }
+                        }}
+                        className={`
+                        w-full px-3 py-2.5 rounded-lg
+                        flex items-center gap-x-4
+                        text-red-600 hover:bg-red-100
+                        transition-all duration-300
+                        group
+                        ${!open && 'justify-center'}
+                    `}
+                         >
+                            <IoLogOutOutline className='w-5 h-5 transition-transform group-hover:scale-110'/>
+                            <span className={`
+                                font-medium text-sm
+                                transition-all duration-300
+                                whitespace-nowrap
+                                ${!open && 'hidden'}
+                            `}>
+                                Déconnexion
+                            </span>
+
+                         </button>
+
+
                     </div>
                 </div>
             </div>

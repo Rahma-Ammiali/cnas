@@ -10,6 +10,7 @@ import Utilisateur from "./pages/Utilisateur"
 import Evenement from "./pages/Evenement"
 import Statistiques from "./pages/Statistiques"
 import PiecesJointes from './components/piecesjointes';
+import Side from './components/Side';
 
 function App() {
   return (

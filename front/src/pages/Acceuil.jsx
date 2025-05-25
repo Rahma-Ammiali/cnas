@@ -22,7 +22,7 @@ const Acceuil = () => {
   
   return (
     <Side>
-      <div className="min-h-screen bg-gradient-to-b from-white to-[#f0f7ff] p-6">
+      <div className="min-h-screen  p-6">
         <div className="max-w-6xl mx-auto">
           <h1 className="text-3xl font-bold text-[#00428C] mb-8 text-center">
             <span className="bg-gradient-to-r from-[#00428C] to-[#006DB8] text-transparent bg-clip-text">
@@ -30,7 +30,7 @@ const Acceuil = () => {
             </span>
           </h1>
           
-          <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)] p-6 transform hover:scale-[1.01] transition-all duration-300">
+          <div className="bg-white rounded-2xl shadow-[0_6px_15px_rgba(2,_112,_184,_0.3)] p-6 transform hover:scale-[1.01] transition-all duration-300">
             <FullCalendar 
               plugins={[dayGridPlugin,interactionPlugin]}
               initialView="dayGridMonth"
