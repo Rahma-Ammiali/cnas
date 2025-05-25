@@ -25,6 +25,25 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Route de login
+app.post('/login', (req, res) => {
+  const { numSecurite, password } = req.body;
+  const query = 'SELECT * FROM login WHERE num_securite = ? AND password = ?';
+  
+  db.query(query, [numSecurite, password], (err, results) => {
+    if (err) {
+      console.error('Erreur de connexion:', err);
+      return res.status(500).json({ message: "Erreur de connexion" });
+    }
+    
+    if (results.length > 0) {
+      res.json({ message: "Logged in successfully" });
+    } else {
+      res.json({ message: "Login failed" });
+    }
+  });
+});
+
 // Servir les fichiers statiques
 app.use('/uploads', express.static('uploads'));
 

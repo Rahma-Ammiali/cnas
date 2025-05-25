@@ -9,8 +9,9 @@ const Acceuil = () => {
   useEffect(()=>{
     const fetchEvents = async () =>{
       try{
-        const response = await fetch('http://localhost:5000/api/events')
+        const response = await fetch('http://localhost:5000/api/event')
         const data = await response.json()
+        console.log("Événements récupérés:", data) // Pour déboguer
         setEvents(data)
       }catch(error){
         console.error("erreur de recuperation des évenements : ",error)

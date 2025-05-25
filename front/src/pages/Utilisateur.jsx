@@ -19,7 +19,7 @@ const Utilisateur = () => {
   const handleSubmit= async (e) =>{
     e.preventDefault();
     try{
-      const response = await fetch('http://localhost:5000/api/utilisateurs/ajouter',{
+      const response = await fetch('http://localhost:5000/api/utilisateur/ajouter',{
         method:'POST',
         headers : {
           'Content-Type' : 'application/json'
@@ -80,7 +80,7 @@ const Utilisateur = () => {
                       <option value="">-- choisir un role --</option>
                       <option value="directrice">Directrice</option>
                       <option value="educatrice">Educatrice</option>
-                      <option value="educatrice_en_chef">Educatrice en chef</option>
+                      <option value="educatrice en chef">Educatrice en chef</option>
                       <option value="secretaire">Secrétaire</option>
                       <option value="econome">Econome</option>
                       <option value="agent_cnas">Agent Cnas</option>

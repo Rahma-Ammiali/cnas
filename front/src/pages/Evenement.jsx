@@ -48,7 +48,7 @@ const Evenement = () => {
             return
         }
         try{
-            const response = await fetch("http://localhost:5000/api/events",{
+            const response = await fetch("http://localhost:5000/api/event",{
                 method:'POST',
                 headers:{
                     "Content-Type":"application/json"
