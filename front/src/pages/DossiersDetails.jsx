@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Side from '../components/Side';
+import { IoArrowBack, IoPrint } from 'react-icons/io5';
+import { FaChild, FaUserFriends, FaFileAlt, FaBrain } from 'react-icons/fa';
 
 const DossierDetails = () => {
   const { id } = useParams();
@@ -29,8 +31,12 @@ const DossierDetails = () => {
   if (loading) {
     return (
       <Side>
-        <div className="p-6">
-          <div className="text-center">Chargement...</div>
+        <div className="min-h-screen bg-gradient-to-b from-white to-[#f0f7ff] p-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-center h-[60vh]">
+              <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#00428C]"></div>
+            </div>
+          </div>
         </div>
       </Side>
     );
@@ -39,14 +45,24 @@ const DossierDetails = () => {
   if (!dossier) {
     return (
       <Side>
-        <div className="p-6">
-          <div className="text-center">Dossier non trouvé</div>
-          <button 
-            onClick={() => navigate(-1)}
-            className="mt-4 bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded"
-          >
-            Retour
-          </button>
+        <div className="min-h-screen bg-gradient-to-b from-white to-[#f0f7ff] p-6">
+          <div className="max-w-7xl mx-auto text-center space-y-6">
+            <h2 className="text-2xl font-bold text-[#00428C]">Dossier non trouvé</h2>
+            <button 
+              onClick={() => navigate(-1)}
+              className="
+                px-6 py-3 rounded-lg
+                bg-[#00428C] text-white
+                hover:bg-[#006DB8]
+                transition-all duration-300
+                transform hover:scale-105
+                flex items-center gap-2 mx-auto
+              "
+            >
+              <IoArrowBack className="w-5 h-5" />
+              Retour
+            </button>
+          </div>
         </div>
       </Side>
     );
@@ -54,104 +70,219 @@ const DossierDetails = () => {
 
   return (
     <Side>
-      <div className="p-6 bg-[white]  shadow-xl border border-gray-200 rounded-l h-[90vh] overflow-hidden">
-        <div className='h-full overflow-y-auto pr-2'> 
-          <div className="flex justify-between items-center mb-4">
+      <div className="min-h-screen bg-gradient-to-b from-white to-[#f0f7ff] p-6">
+        <div className="max-w-7xl mx-auto space-y-8">
+          <div className="flex justify-between items-center">
             <button 
               onClick={() => navigate(-1)}
-              className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded cursor-pointer"
+              className="
+                px-6 py-3 rounded-lg
+                bg-[#00428C] text-white
+                hover:bg-[#006DB8]
+                transition-all duration-300
+                transform hover:scale-105
+                flex items-center gap-2
+              "
             >
+              <IoArrowBack className="w-5 h-5" />
               Retour
             </button>
             <button
               onClick={handlePrint}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded cursor-pointer"
+              className="
+                px-6 py-3 rounded-lg
+                bg-[#00428C] text-white
+                hover:bg-[#006DB8]
+                transition-all duration-300
+                transform hover:scale-105
+                flex items-center gap-2
+              "
             >
+              <IoPrint className="w-5 h-5" />
               Imprimer
             </button>
           </div>
 
-          <h2 className='text-3xl text-[#00428C] font-bold mb-6'>Détails du Dossier</h2>
+          <h2 className="text-3xl font-bold text-center">
+            <span className="bg-gradient-to-r from-[#00428C] to-[#006DB8] text-transparent bg-clip-text">
+              Détails du Dossier
+            </span>
+          </h2>
 
           <div className="grid grid-cols-1 gap-8">
-            <div className="bg-white p-6 shadow-l border border-gray-200 rounded-l ">
-              <h2 className="text-xl font-semibold mb-4">Information sur l'enfant :</h2>
-              <div className="grid grid-cols-1 gap-4 ">
-                <div>
-                  <label className="font-medium">Nom :</label>
-                  <input type="text" value={dossier.nom || ''} readOnly className="ml-2 border rounded px-2 py-1 w-full" />
+            <div className="bg-white rounded-2xl p-8 shadow-[0_10px_30px_rgba(8,_112,_184,_0.2)]">
+              <div className="flex items-center gap-3 mb-6">
+                <FaChild className="w-6 h-6 text-[#00428C]" />
+                <h3 className="text-xl font-semibold text-[#00428C]">Information sur l'enfant</h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="group">
+                    <label className="text-sm text-[#00428C]/70 font-medium block mb-1">Nom</label>
+                    <input 
+                      type="text" 
+                      value={dossier.nom || ''} 
+                      readOnly 
+                      className="w-full p-4 bg-[#DAEAF4] rounded-lg text-[#00428C] focus:outline-none" 
+                    />
+                  </div>
+                  <div className="group">
+                    <label className="text-sm text-[#00428C]/70 font-medium block mb-1">Prénom</label>
+                    <input 
+                      type="text" 
+                      value={dossier.prenom || ''} 
+                      readOnly 
+                      className="w-full p-4 bg-[#DAEAF4] rounded-lg text-[#00428C] focus:outline-none" 
+                    />
+                  </div>
+                  <div className="group">
+                    <label className="text-sm text-[#00428C]/70 font-medium block mb-1">Date de naissance</label>
+                    <input 
+                      type="text" 
+                      value={dossier.date_naissance || ''} 
+                      readOnly 
+                      className="w-full p-4 bg-[#DAEAF4] rounded-lg text-[#00428C] focus:outline-none" 
+                    />
+                  </div>
                 </div>
-                <div>
-                  <label className="font-medium">Prénom :</label>
-                  <input type="text" value={dossier.prenom || ''} readOnly className="ml-2 border rounded px-2 py-1 w-full" />
-                </div>
-                <div>
-                  <label className="font-medium">Date de naissance :</label>
-                  <input type="text" value={dossier.date_naissance || ''} readOnly className="ml-2 border rounded px-2 py-1 w-full" />
-                </div>
-                <div>
-                  <label className="font-medium">Situation Handicap :</label>
-                  <input type="text" value={dossier.handicap === 'Oui' ? dossier.handicap_details || 'Oui' : 'Non'} readOnly className="ml-2 border rounded px-2 py-1 w-full" />
-                </div>
-                <div>
-                  <label className="font-medium">Maladie Chronique :</label>
-                  <input type="text" value={dossier.maladie_chronique === 'Oui' ? dossier.maladie_details || 'Oui' : 'Non'} readOnly className="ml-2 border rounded px-2 py-1 w-full" />
-                </div>
-                <div>
-                  <label className="font-medium">Année Scolaire :</label>
-                  <input type="text" value={dossier.annee_scolaire || ''} readOnly className="ml-2 border rounded px-2 py-1 w-full" />
+                <div className="space-y-4">
+                  <div className="group">
+                    <label className="text-sm text-[#00428C]/70 font-medium block mb-1">Situation Handicap</label>
+                    <input 
+                      type="text" 
+                      value={dossier.handicap === 'Oui' ? dossier.handicap_details || 'Oui' : 'Non'} 
+                      readOnly 
+                      className="w-full p-4 bg-[#DAEAF4] rounded-lg text-[#00428C] focus:outline-none" 
+                    />
+                  </div>
+                  <div className="group">
+                    <label className="text-sm text-[#00428C]/70 font-medium block mb-1">Maladie Chronique</label>
+                    <input 
+                      type="text" 
+                      value={dossier.maladie_chronique === 'Oui' ? dossier.maladie_details || 'Oui' : 'Non'} 
+                      readOnly 
+                      className="w-full p-4 bg-[#DAEAF4] rounded-lg text-[#00428C] focus:outline-none" 
+                    />
+                  </div>
+                  <div className="group">
+                    <label className="text-sm text-[#00428C]/70 font-medium block mb-1">Année Scolaire</label>
+                    <input 
+                      type="text" 
+                      value={dossier.annee_scolaire || ''} 
+                      readOnly 
+                      className="w-full p-4 bg-[#DAEAF4] rounded-lg text-[#00428C] focus:outline-none" 
+                    />
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white p-6 shadow-l border border-gray-200 rounded-l">
-              <h2 className="text-xl font-semibold mb-4">Informations sur les parents :</h2>
-              <div className="grid grid-cols-1 gap-4">
-                <div>
-                  <label className="font-medium">Prénom du père :</label>
-                  <input type="text" value={dossier.prenom_pere || ''} readOnly className="ml-2 border rounded px-2 py-1 w-full" />
+            <div className="bg-white rounded-2xl p-8 shadow-[0_10px_30px_rgba(8,_112,_184,_0.2)]">
+              <div className="flex items-center gap-3 mb-6">
+                <FaUserFriends className="w-6 h-6 text-[#00428C]" />
+                <h3 className="text-xl font-semibold text-[#00428C]">Informations sur les parents</h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="group">
+                    <label className="text-sm text-[#00428C]/70 font-medium block mb-1">Prénom du père</label>
+                    <input 
+                      type="text" 
+                      value={dossier.prenom_pere || ''} 
+                      readOnly 
+                      className="w-full p-4 bg-[#DAEAF4] rounded-lg text-[#00428C] focus:outline-none" 
+                    />
+                  </div>
+                  <div className="group">
+                    <label className="text-sm text-[#00428C]/70 font-medium block mb-1">Nom et Prénom de la mère</label>
+                    <input 
+                      type="text" 
+                      value={`${dossier.nom_mere || ''} ${dossier.prenom_mere || ''}`} 
+                      readOnly 
+                      className="w-full p-4 bg-[#DAEAF4] rounded-lg text-[#00428C] focus:outline-none" 
+                    />
+                  </div>
+                  <div className="group">
+                    <label className="text-sm text-[#00428C]/70 font-medium block mb-1">Numéro d'assurance de la mère</label>
+                    <input 
+                      type="text" 
+                      value={dossier.assurance_mere_ou_employeur || ''} 
+                      readOnly 
+                      className="w-full p-4 bg-[#DAEAF4] rounded-lg text-[#00428C] focus:outline-none" 
+                    />
+                  </div>
                 </div>
-                <div>
-                  <label className="font-medium">Nom et Prénom de la mère :</label>
-                  <input type="text" value={`${dossier.nom_mere || ''} ${dossier.prenom_mere || ''}`} readOnly className="ml-2 border rounded px-2 py-1 w-full" />
-                </div>
-                <div>
-                  <label className="font-medium">Numéro d'assurance de la mère :</label>
-                  <input type="text" value={dossier.assurance_mere_ou_employeur || ''} readOnly className="ml-2 border rounded px-2 py-1 w-full" />
-                </div>
-                <div>
-                  <label className="font-medium">Num tel du père :</label>
-                  <input type="text" value={dossier.telephone_pere || ''} readOnly className="ml-2 border rounded px-2 py-1 w-full" />
-                </div>
-                <div>
-                  <label className="font-medium">Num tel de la mère :</label>
-                  <input type="text" value={dossier.telephone_mere || ''} readOnly className="ml-2 border rounded px-2 py-1 w-full" />
-                </div>
-                <div>
-                  <label className="font-medium">Adresse :</label>
-                  <input type="text" value={dossier.adresse || ''} readOnly className="ml-2 border rounded px-2 py-1 w-full" />
-                </div>
-                <div>
-                  <label className="font-medium">Tarif Préférentiel :</label>
-                  <input type="text" value={dossier.tarif_preferentiel || ''} readOnly className="ml-2 border rounded px-2 py-1 w-full" />
+                <div className="space-y-4">
+                  <div className="group">
+                    <label className="text-sm text-[#00428C]/70 font-medium block mb-1">Num tel du père</label>
+                    <input 
+                      type="text" 
+                      value={dossier.telephone_pere || ''} 
+                      readOnly 
+                      className="w-full p-4 bg-[#DAEAF4] rounded-lg text-[#00428C] focus:outline-none" 
+                    />
+                  </div>
+                  <div className="group">
+                    <label className="text-sm text-[#00428C]/70 font-medium block mb-1">Num tel de la mère</label>
+                    <input 
+                      type="text" 
+                      value={dossier.telephone_mere || ''} 
+                      readOnly 
+                      className="w-full p-4 bg-[#DAEAF4] rounded-lg text-[#00428C] focus:outline-none" 
+                    />
+                  </div>
+                  <div className="group">
+                    <label className="text-sm text-[#00428C]/70 font-medium block mb-1">Adresse</label>
+                    <input 
+                      type="text" 
+                      value={dossier.adresse || ''} 
+                      readOnly 
+                      className="w-full p-4 bg-[#DAEAF4] rounded-lg text-[#00428C] focus:outline-none" 
+                    />
+                  </div>
+                  <div className="group">
+                    <label className="text-sm text-[#00428C]/70 font-medium block mb-1">Tarif Préférentiel</label>
+                    <input 
+                      type="text" 
+                      value={dossier.tarif_preferentiel || ''} 
+                      readOnly 
+                      className="w-full p-4 bg-[#DAEAF4] rounded-lg text-[#00428C] focus:outline-none" 
+                    />
+                  </div>
                 </div>
               </div>
             </div>
 
-              <div className="flex justify-end gap-4 mt-2">
-                <button
-                 onClick={() => navigate(`/pieces-jointes/${id}`)}
-                 className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow cursor-pointer"
-                 >
-                 Pièces jointes
-                 </button>
-                 <button
-                 onClick={() => navigate(`/suivi-pedagogique/${id}`)}
-                 className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded shadow cursor-pointer"
-                 >
-                  Suivi Psychopédagogique
-                 </button>
-              </div>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => navigate(`/pieces-jointes/${id}`)}
+                className="
+                  px-6 py-3 rounded-lg
+                  bg-[#00428C] text-white
+                  hover:bg-[#006DB8]
+                  transition-all duration-300
+                  transform hover:scale-105
+                  flex items-center gap-2
+                "
+              >
+                <FaFileAlt className="w-5 h-5" />
+                Pièces jointes
+              </button>
+              <button
+                onClick={() => navigate(`/suivi-pedagogique/${id}`)}
+                className="
+                  px-6 py-3 rounded-lg
+                  bg-[#00428C] text-white
+                  hover:bg-[#006DB8]
+                  transition-all duration-300
+                  transform hover:scale-105
+                  flex items-center gap-2
+                "
+              >
+                <FaBrain className="w-5 h-5" />
+                Suivi Psychopédagogique
+              </button>
+            </div>
           </div>
         </div>
       </div>

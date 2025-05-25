@@ -1,27 +1,53 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { FaChild, FaSearch, FaClipboardList } from 'react-icons/fa'
 
 const Steps = ({step}) => {
-  return (
-    <>
-    <div className='flex flex-col items-center justify-center space-y-4'>
-        <div className='flex item-center'>
-            {[1,2,3].map((num)=>(
-                <div key={num} className='flex items-center'>
-                    <div className={`w-10 h-10 font-bold flex items-center justify-center rounded-full border-2 transition-all
-                        ${step >=num ? "bg-[#006DB8] text-white  border-[#006DB8] ": "bg-white text-[#006DB8] border-[#00428C]"}`}>
-                            {num}
-                        </div>
-                        {num < 3 && <div className='w-15 h-[2px] bg-gray-400'></div>}
-                </div>
-            ))}
+  const steps = [
+    { number: 1, icon: <FaSearch className="w-5 h-5" />, label: "Recherche" },
+    { number: 2, icon: <FaChild className="w-5 h-5" />, label: "Sélection" },
+    { number: 3, icon: <FaClipboardList className="w-5 h-5" />, label: "Informations" }
+  ]
 
+  return (
+    <div className='max-w-3xl mx-auto'>
+      <div className='flex justify-between items-center relative'>
+        {/* Ligne de progression */}
+        <div className='absolute left-0 right-0 top-1/2 transform -translate-y-1/2 h-1 bg-gray-200'>
+          <div 
+            className='h-full bg-[#006DB8] transition-all duration-500 ease-in-out'
+            style={{ width: `${((step - 1) / 2) * 100}%` }}
+          />
         </div>
-        {/* <div className='flex space-x-4'>
-            <button onClick={handleNext} className='px-4 py-2 bg-gray-300 rounded' disabled={step ===3}>Suivant</button>
-            <button onClick={handlePrevious} className='px-2 py-2 bg-gray-300 rounded ' disabled={step===1}>retourner</button>
-        </div> */}
+
+        {/* Étapes */}
+        {steps.map((s, index) => (
+          <div key={s.number} className='relative z-10 flex flex-col items-center gap-2'>
+            <div 
+              className={`
+                w-14 h-14 rounded-full flex items-center justify-center
+                transition-all duration-500 ease-in-out transform
+                ${step >= s.number 
+                  ? 'bg-[#006DB8] text-white scale-110' 
+                  : 'bg-white text-[#006DB8] border-2 border-[#00428C]'
+                }
+                ${step === s.number ? 'ring-4 ring-[#006DB8]/20' : ''}
+                hover:scale-105
+              `}
+            >
+              {s.icon}
+            </div>
+            <span 
+              className={`
+                text-sm font-medium transition-all duration-500
+                ${step >= s.number ? 'text-[#006DB8]' : 'text-gray-500'}
+              `}
+            >
+              {s.label}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
-    </>
   )
 }
 

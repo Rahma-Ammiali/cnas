@@ -25,16 +25,31 @@ const Preinscription = () => {
 
   return (
     <Side>
-      <div className='w-full h-[90vh] overflow-hidden'>
-        <div className='w-full h-full bg-white shadow-xl border border-gray-200 rounded-xl relative flex flex-col'>
-          <h1 className='text-[35px] text-[#00428C] font-bold flex justify-center pt-4'>Préinscription</h1>
-          <Steps step={step} />
-          
-          {/* Scrollable content area */}
-          <div className='flex-1 overflow-y-auto px-4 pb-4'>
-            {step === 1 && <Etape1 nextStep={nextStep} setFormData={setFormData} formData={formData}/>}
-            {step === 2 && <Etape2 nextStep={nextStep} prevStep={prevStep} formData={formData} />}
-            {step === 3 && <Etape3 prevStep={prevStep} formData={formData} setFormData={setFormData}/>}
+      <div className="min-h-screen bg-gradient-to-b from-white to-[#f0f7ff] p-6">
+        <div className="max-w-5xl mx-auto">
+          <div className='bg-white rounded-2xl shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)] overflow-hidden transform hover:scale-[1.01] transition-all duration-300'>
+            <div className='p-8'>
+              <h1 className='text-4xl font-bold text-center mb-8'>
+                <span className="bg-gradient-to-r from-[#00428C] to-[#006DB8] text-transparent bg-clip-text">
+                  Préinscription
+                </span>
+              </h1>
+              
+              <Steps step={step} />
+            </div>
+
+            {/* Zone de contenu défilable avec animation de transition */}
+            <div className='px-8 pb-8 min-h-[500px] relative'>
+              <div className={`transition-opacity duration-300 ${step === 1 ? 'opacity-100' : 'opacity-0 absolute'}`}>
+                {step === 1 && <Etape1 nextStep={nextStep} setFormData={setFormData} formData={formData}/>}
+              </div>
+              <div className={`transition-opacity duration-300 ${step === 2 ? 'opacity-100' : 'opacity-0 absolute'}`}>
+                {step === 2 && <Etape2 nextStep={nextStep} prevStep={prevStep} formData={formData} />}
+              </div>
+              <div className={`transition-opacity duration-300 ${step === 3 ? 'opacity-100' : 'opacity-0 absolute'}`}>
+                {step === 3 && <Etape3 prevStep={prevStep} formData={formData} setFormData={setFormData}/>}
+              </div>
+            </div>
           </div>
         </div>
       </div>

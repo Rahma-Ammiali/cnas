@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { IoLogOutOutline } from "react-icons/io5";
 import { CiUser, CiStopwatch, CiCalendarDate } from "react-icons/ci";
-import { FaRegPenToSquare } from "react-icons/fa6";
+import { FaRegPenToSquare, FaMoon, FaSun } from "react-icons/fa6";
 import { GoHome } from "react-icons/go";
 import { BsFiles } from "react-icons/bs";
 import { MdBarChart } from "react-icons/md";
@@ -12,62 +12,178 @@ import logo from '../assets/logo.png'
 
 const Side = ({children}) => {
     const [open, setOpen] = useState(true);
+    const [isDarkMode, setIsDarkMode] = useState(false);
     const location = useLocation();
     const Menus = [
-        {title: "Acceuil", icone: <GoHome className='w-6 h-6 text-[#00428C]'/>, path: "/Acceuil"},
-        {title: "Préinscription", icone: <FaRegPenToSquare className='w-6 h-6 text-[#00428C]'/>, path: "/Preinscription"},
-        {title: "Liste D'attente", icone: <CiStopwatch className='w-6 h-6 md:w-8 md:h-9 text-[#00428C]'/>, path: "/EnAttente"},
-        {title: "Dossiers", icone: <BsFiles className='w-6 h-6 text-[#00428C]'/>, path: "/Dossiers"},
-        {title: "Nouveau Utilisateur", icone: <CiUser className='w-6 md:w-9 md:h-9 text-[#00428C]'/>, path: "/Utilisateur"},
-        {title: "Evenements et Places", icone: <CiCalendarDate className='w-6 h-6 md:w-9 md:h-9 text-[#00428C]'/>, path: "/Evenement"},
-        {title: "Statistiques", icone: <MdBarChart className='w-6 h-6 text-[#00428C]'/>, path: "/statistiques"}
+        {title: "Acceuil", icone: <GoHome className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Acceuil"},
+        {title: "Préinscription", icone: <FaRegPenToSquare className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Preinscription"},
+        {title: "Liste D'attente", icone: <CiStopwatch className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/EnAttente"},
+        {title: "Dossiers", icone: <BsFiles className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Dossiers"},
+        {title: "Nouveau Utilisateur", icone: <CiUser className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Utilisateur"},
+        {title: "Evenements et Places", icone: <CiCalendarDate className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Evenement"},
+        {title: "Statistiques", icone: <MdBarChart className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/statistiques"}
     ];
 
     return (
-        <div className='flex'>
-            <div className={`${open ? 'lg:w-[13vw] md:w-[20vw] sm:w-[25vw]' : 'w-[8%]'} p-[1.5%] pt-0 duration-300 h-[100vh] bg-white drop-shadow-xl relative`}>
-                <img 
-                    src={toggle} 
-                    className={`absolute cursor-pointer -right-3 rounded-full top-9 ${open ? 'w-7' : 'w-6'} border-2 border-[#00428C] ${!open && 'rotate-180'}`}
-                    alt='toggle sidebar'
+        <div className='flex min-h-screen bg-gray-50'>
+            <div 
+                className={`
+                    ${open ? 'w-64' : 'w-20'} 
+                    min-h-screen bg-white 
+                    shadow-[4px_0_6px_-1px_rgba(0,66,140,0.1)] 
+                    fixed left-0 top-0 z-50
+                    transition-all duration-300 ease-in-out
+                    overflow-hidden
+                    flex flex-col
+                `}
+            >
+                <button
+                    className={`
+                        absolute -right-3 top-9 
+                        bg-white rounded-full p-1.5
+                        shadow-[0_2px_10px_-1px_rgba(0,66,140,0.2)]
+                        border border-[#00428C]/20
+                        transition-all duration-300 ease-in-out
+                        hover:shadow-[0_4px_12px_-1px_rgba(0,66,140,0.3)]
+                        hover:border-[#00428C]/40
+                        cursor-pointer
+                        ${!open && 'rotate-180'}
+                    `}
                     onClick={() => setOpen(!open)}
-                />
-                <div className=" h-full pb-10">
-                    <div className='items-center mt-2 mb-6 justify-center flex duration-500 ease-in-out'>
+                >
+                    <img 
+                        src={toggle} 
+                        className='w-5 h-5 transition-transform duration-300'
+                        alt='toggle sidebar'
+                    />
+                </button>
+
+                <div className="flex-1 flex flex-col p-4">
+                    <div className='flex items-center gap-3 py-4'>
                         <img 
-                            className={`cursor-pointer mr-2 ${open ? 'w-10' : 'w-12'} ${!open && "rotate-360deg"}`}
+                            className={`
+                                ${open ? 'w-16' : 'w-12'} 
+                                transition-all duration-300 
+                                hover:scale-110
+                            `}
                             src={logo} 
                             alt="cnas-logo" 
                         />
-                        <p className={`${open ? 'text-sm font-semibold' : 'hidden'}`}>
-                            la caisse nationale des travailleurs salariés
-                        </p>
+                        <div className={`
+                            ${open ? 'opacity-100 text-sm font-medium' : 'opacity-0 w-0'} 
+                            text-[#00428C] transition-all duration-300
+                            leading-tight whitespace-normal
+                        `}>
+                            <p>Caisse Nationale</p>
+                            <p>des Assurances Sociales</p>
+                        </div>
                     </div>
-                    <hr className='border-gray-500 mb-6' />
-                    <ul className='pl-0'>
+
+                    <div className='h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent my-4'></div>
+
+                    <ul className='flex-1 space-y-2'>
                         {Menus.map((menu, index) => (
                             <Link to={menu.path} key={index}>
-                                <li className={`w-[100%] text-gray-300 text-sm flex items-center gap-x-6 cursor-pointer ${
-                                    open ? 'p-2 mt-0' : 'pt-2 pb-2 mt-2 justify-center'
-                                } rounded-md ${
-                                    location.pathname === menu.path ? 'bg-white' : ''
-                                } hover:bg-[#86BFE5]`}>
-                                    {menu.icone}
-                                    <span className={`${
-                                        !open && 'hidden'
-                                    } origin-left duration-200 text-[#00428C] text-base sm:text-l ${
-                                        open ? 'text-[24px] sm:text-xs' : ''
-                                    }`}>
+                                <li className={`
+                                    group
+                                    flex items-center gap-x-4
+                                    px-3 py-2.5 rounded-lg
+                                    transition-all duration-300 ease-in-out
+                                    cursor-pointer
+                                    whitespace-nowrap
+                                    ${location.pathname === menu.path 
+                                        ? 'bg-[#00428C]/10 shadow-sm' 
+                                        : 'hover:bg-[#00428C]/5'
+                                    }
+                                    ${!open && 'justify-center'}
+                                `}>
+                                    <span className="min-w-[24px] flex justify-center">
+                                        {menu.icone}
+                                    </span>
+                                    <span className={`
+                                        text-[#00428C]
+                                        font-medium text-sm
+                                        transition-all duration-300
+                                        ${!open && 'hidden'}
+                                        ${location.pathname === menu.path ? 'text-[#00428C]' : 'text-[#00428C]/70'}
+                                        group-hover:text-[#00428C]
+                                    `}>
                                         {menu.title}
                                     </span>
                                 </li>
                             </Link>
                         ))}
                     </ul>
+
+                    <div className='space-y-4 mt-auto'>
+                        <button 
+                            onClick={() => setIsDarkMode(!isDarkMode)}
+                            className={`
+                                w-full px-3 py-2.5 rounded-lg
+                                flex items-center gap-x-4
+                                text-[#00428C] hover:bg-[#00428C]/5
+                                transition-all duration-300
+                                group
+                                ${!open && 'justify-center'}
+                            `}
+                        >
+                            {isDarkMode ? (
+                                <>
+                                    <FaSun className='w-5 h-5 transition-transform group-hover:scale-110'/>
+                                    <span className={`
+                                        font-medium text-sm
+                                        transition-all duration-300
+                                        whitespace-nowrap
+                                        ${!open && 'hidden'}
+                                    `}>
+                                        Mode clair
+                                    </span>
+                                </>
+                            ) : (
+                                <>
+                                    <FaMoon className='w-5 h-5 transition-transform group-hover:scale-110'/>
+                                    <span className={`
+                                        font-medium text-sm
+                                        transition-all duration-300
+                                        whitespace-nowrap
+                                        ${!open && 'hidden'}
+                                    `}>
+                                        Mode sombre
+                                    </span>
+                                </>
+                            )}
+                        </button>
+
+                        <button className={`
+                            w-full px-3 py-2.5 rounded-lg
+                            flex items-center gap-x-4
+                            text-red-600 hover:bg-red-50
+                            transition-all duration-300
+                            group
+                            ${!open && 'justify-center'}
+                        `}>
+                            <IoLogOutOutline className='w-5 h-5 transition-transform group-hover:scale-110'/>
+                            <span className={`
+                                font-medium text-sm
+                                transition-all duration-300
+                                whitespace-nowrap
+                                ${!open && 'hidden'}
+                            `}>
+                                Déconnexion
+                            </span>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div className='flex-1 p-8'>
-                {children}
+
+            <div className={`
+                flex-1 
+                transition-all duration-300
+                ${open ? 'ml-64' : 'ml-20'}
+            `}>
+                <div className='p-8 min-h-screen'>
+                    {children}
+                </div>
             </div>
         </div>
     );

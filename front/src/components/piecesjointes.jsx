@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { FiUpload, FiEye, FiCheck, FiArrowLeft, FiPaperclip } from 'react-icons/fi';
 
 const PiecesJointes = () => {
   const { dossierId } = useParams();
@@ -57,7 +58,7 @@ const PiecesJointes = () => {
 
         if (response.ok) {
           alert('Document ajouté avec succès');
-          fetchDocuments(); // Rafraîchir la liste des documents
+          fetchDocuments();
         } else {
           alert('Erreur lors de l\'ajout du document');
         }
@@ -101,7 +102,7 @@ const PiecesJointes = () => {
 
       if (response.ok) {
         alert('Document validé avec succès');
-        fetchDocuments(); // Rafraîchir la liste des documents
+        fetchDocuments();
       } else {
         alert('Erreur lors de la validation du document');
       }
@@ -117,15 +118,18 @@ const PiecesJointes = () => {
         <div className="mb-6">
           <button
             onClick={() => navigate(`/dossiers/${dossierId}`)}
-            className="text-blue-600 hover:text-blue-800"
+            className="flex items-center text-blue-600 hover:text-blue-800 transition-all duration-300 transform hover:scale-105"
           >
-            ← Retour au dossier
+            <FiArrowLeft className="mr-2" /> Retour au dossier
           </button>
-          <h1 className="text-2xl font-bold text-blue-600 mt-4">Les pieces jointes :</h1>
+          <h1 className="text-2xl font-bold text-blue-600 mt-4 flex items-center">
+            <FiPaperclip className="mr-3 transition-all duration-500 hover:rotate-12" /> 
+            Les pièces jointes :
+          </h1>
         </div>
 
-        <div className="bg-white rounded-lg shadow">
-          <div className="grid grid-cols-4 gap-4 p-4 bg-gray-50 font-semibold">
+        <div className="bg-white rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-500">
+          <div className="grid grid-cols-4 gap-4 p-4 bg-blue-600 text-white font-semibold rounded-t-lg">
             <div>Nom du document</div>
             <div>Ajout</div>
             <div>Voir plus</div>
@@ -133,37 +137,49 @@ const PiecesJointes = () => {
           </div>
 
           {piecesJointes.map((piece) => (
-            <div key={piece.id} className="grid grid-cols-4 gap-4 p-4 border-b items-center">
-              <div className="text-blue-600">{piece.nom}</div>
+            <div key={piece.id} className="grid grid-cols-4 gap-4 p-4 border-b items-center hover:bg-blue-50 transition-colors duration-300">
+              <div className="text-blue-600 font-medium">{piece.nom}</div>
+              
+              {/* Bouton Ajouter avec effets accentués */}
               <div>
                 <button
                   onClick={() => handleUpload(piece.nom)}
-                  className="bg-gray-500 text-white px-4 py-1 rounded hover:bg-gray-600"
+                  className="flex items-center justify-center bg-white text-blue-600 px-4 py-2 rounded-lg border-2 border-blue-200 shadow-md hover:shadow-lg hover:scale-110 active:scale-95 transition-all duration-300"
                 >
-                  Ajouter
+                  <FiUpload className="mr-2" /> Ajouter
                 </button>
               </div>
+              
+              {/* Bouton Consulter avec effets accentués */}
               <div>
                 <button
                   onClick={() => handleConsult(piece.nom)}
-                  className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600"
                   disabled={!documentsStatus[piece.nom]}
+                  className={`flex items-center justify-center px-4 py-2 rounded-lg border-2 shadow-md hover:shadow-lg hover:scale-110 active:scale-95 transition-all duration-300 ${
+                    documentsStatus[piece.nom] 
+                      ? 'bg-white text-green-600 border-green-200 hover:bg-green-100' 
+                      : 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                  }`}
                 >
-                  Consulter
+                  <FiEye className="mr-2" /> Consulter
                 </button>
               </div>
+              
+              {/* Section Validation avec effets */}
               <div>
                 {documentsStatus[piece.nom]?.status === 'Validé' ? (
-                  <span className="text-green-600 font-medium">✓ Validé</span>
+                  <div className="flex items-center text-green-600 font-medium animate-pulse">
+                    <FiCheck className="mr-2 text-2xl" /> Validé
+                  </div>
                 ) : documentsStatus[piece.nom]?.id ? (
                   <button
                     onClick={() => handleValidation(piece.nom)}
-                    className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
+                    className="flex items-center justify-center bg-white text-blue-600 px-4 py-2 rounded-lg border-2 border-blue-200 shadow-md hover:shadow-lg hover:scale-110 active:scale-95 transition-all duration-300"
                   >
-                    Valider
+                    <FiCheck className="mr-2" /> Valider
                   </button>
                 ) : (
-                  <span className="text-gray-400">En attente du document</span>
+                  <span className="text-gray-400 italic">En attente</span>
                 )}
               </div>
             </div>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { IoClose } from 'react-icons/io5'
 
 const DetailsModal = ({id, onClose, context = 'enAttente'}) => {
     const [details, setDetails] = useState(null)
@@ -31,16 +32,18 @@ const DetailsModal = ({id, onClose, context = 'enAttente'}) => {
 
     if (error) {
         return (
-            <div className='w-[80vw] flex justify-center'>
-                <div className='w-[70vw] bg-[#F3FAFF] px-3 py-10 absolute top-7 rounded shadow-2xl border border-gray-200'>
-                    <button 
-                        className='right-20 absolute bg-blue-400 hover:bg-blue-500 text-white px-3 py-1 rounded shadow-sm'
-                        onClick={onClose}>
-                        Fermer
-                    </button>
-                    <div className='text-red-500 text-center'>
-                        {error}
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                <div className="bg-white rounded-2xl p-8 max-w-2xl w-full mx-4 shadow-[0_10px_30px_rgba(8,_112,_184,_0.3)]">
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-2xl font-bold text-red-500">Erreur</h2>
+                        <button 
+                            onClick={onClose}
+                            className="p-2 hover:bg-red-50 rounded-full transition-colors duration-200"
+                        >
+                            <IoClose className="w-6 h-6 text-red-500" />
+                        </button>
                     </div>
+                    <p className="text-red-500 text-center">{error}</p>
                 </div>
             </div>
         );
@@ -67,40 +70,97 @@ const DetailsModal = ({id, onClose, context = 'enAttente'}) => {
     } : details;
 
     return (
-        <div className='w-[80vw] flex justify-center'>
-            <div className='w-[70vw] bg-[#F3FAFF] px-3 py-10 absolute top-7 rounded shadow-2xl border border-gray-200'>
-                <button 
-                    className='right-20 absolute bg-blue-400 hover:bg-blue-500 text-white px-3 py-1 rounded shadow-sm'
-                    onClick={onClose}>
-                    Fermer
-                </button>
-                <div className='flex justify-between mx-15'>
-                    <div className='flex flex-col gap-1.5'>
-                        <h1 className='text-[25px] text-[#00428C] font-bold'>Information sur l'enfant et les parents : </h1>
-                        <h2 className='text-[15px] text-[black] font-bold'>Infos enfant : </h2>
-                        <p>Nom : {displayData.nom_enfant}</p>
-                        <p>Prénom : {displayData.prenom_enfant}</p>
-                        <p>Date de naissance : {displayData.date_naissance}</p>
-                        <p>Classe : {displayData.classe}</p>
-                        <p>Handicap : {displayData.handicap ? `Oui (${displayData.handicap_details})` : 'Non'}</p>
-                        <p>Maladie chronique : {displayData.maladie_chronique ? `Oui (${displayData.maladie_details})` : 'Non'}</p>
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-2xl p-8 max-w-4xl w-full mx-4 shadow-[0_10px_30px_rgba(8,_112,_184,_0.3)]">
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-bold">
+                        <span className="bg-gradient-to-r from-[#00428C] to-[#006DB8] text-transparent bg-clip-text">
+                            Détails de la préinscription
+                        </span>
+                    </h2>
+                    <button 
+                        onClick={onClose}
+                        className="p-2 hover:bg-[#00428C]/10 rounded-full transition-colors duration-200"
+                    >
+                        <IoClose className="w-6 h-6 text-[#00428C]" />
+                    </button>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-8">
+                    <div className="space-y-6">
+                        <div>
+                            <h3 className="text-lg font-semibold text-[#00428C] mb-4">Informations de l'enfant</h3>
+                            <div className="space-y-3">
+                                <p className="flex items-center justify-between py-2 border-b">
+                                    <span className="text-gray-600">Nom</span>
+                                    <span className="font-medium">{displayData.nom_enfant}</span>
+                                </p>
+                                <p className="flex items-center justify-between py-2 border-b">
+                                    <span className="text-gray-600">Prénom</span>
+                                    <span className="font-medium">{displayData.prenom_enfant}</span>
+                                </p>
+                                <p className="flex items-center justify-between py-2 border-b">
+                                    <span className="text-gray-600">Date de naissance</span>
+                                    <span className="font-medium">{displayData.date_naissance}</span>
+                                </p>
+                                <p className="flex items-center justify-between py-2 border-b">
+                                    <span className="text-gray-600">Classe</span>
+                                    <span className="font-medium">{displayData.classe}</span>
+                                </p>
+                                <p className="flex items-center justify-between py-2 border-b">
+                                    <span className="text-gray-600">Handicap</span>
+                                    <span className="font-medium">{displayData.handicap ? `Oui (${displayData.handicap_details})` : 'Non'}</span>
+                                </p>
+                                <p className="flex items-center justify-between py-2 border-b">
+                                    <span className="text-gray-600">Maladie chronique</span>
+                                    <span className="font-medium">{displayData.maladie_chronique ? `Oui (${displayData.maladie_details})` : 'Non'}</span>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div className='mt-8 mr-20 flex flex-col gap-1.5'>
-                        <h2 className='text-[15px] text-[black] font-bold'>Infos parents : </h2>
-                        <p>Tarif préférentiel : {displayData.tarif_preferentiel}</p>
-                        <p>Nom père : {displayData.nom_pere}</p>
-                        <p>Prénom père : {displayData.prenom_pere}</p>
-                        <p>Téléphone père : {displayData.telephone_pere}</p>
-                        <p>Nom mère : {displayData.nom_mere}</p>
-                        <p>Prénom mère : {displayData.prenom_mere}</p>
-                        <p>Téléphone mère : {displayData.telephone_mere || 'N/A'}</p>
-                        <p>Assurance mère ou employeur : {displayData.assurance_mere_ou_employeur}</p>
-                        {context === 'enAttente' && (
-                            <>
-                                <p>Correspondant : {displayData.correspondant}</p>
-                                <p>Date dépôt : {displayData.date_depot}</p>
-                            </>
-                        )}
+
+                    <div className="space-y-6">
+                        <div>
+                            <h3 className="text-lg font-semibold text-[#00428C] mb-4">Informations des parents</h3>
+                            <div className="space-y-3">
+                                <p className="flex items-center justify-between py-2 border-b">
+                                    <span className="text-gray-600">Tarif préférentiel</span>
+                                    <span className="font-medium">{displayData.tarif_preferentiel}</span>
+                                </p>
+                                <p className="flex items-center justify-between py-2 border-b">
+                                    <span className="text-gray-600">Père</span>
+                                    <span className="font-medium">{displayData.nom_pere} {displayData.prenom_pere}</span>
+                                </p>
+                                <p className="flex items-center justify-between py-2 border-b">
+                                    <span className="text-gray-600">Téléphone père</span>
+                                    <span className="font-medium">{displayData.telephone_pere}</span>
+                                </p>
+                                <p className="flex items-center justify-between py-2 border-b">
+                                    <span className="text-gray-600">Mère</span>
+                                    <span className="font-medium">{displayData.nom_mere} {displayData.prenom_mere}</span>
+                                </p>
+                                <p className="flex items-center justify-between py-2 border-b">
+                                    <span className="text-gray-600">Téléphone mère</span>
+                                    <span className="font-medium">{displayData.telephone_mere || 'N/A'}</span>
+                                </p>
+                                <p className="flex items-center justify-between py-2 border-b">
+                                    <span className="text-gray-600">Assurance</span>
+                                    <span className="font-medium">{displayData.assurance_mere_ou_employeur}</span>
+                                </p>
+                                {context === 'enAttente' && (
+                                    <>
+                                        <p className="flex items-center justify-between py-2 border-b">
+                                            <span className="text-gray-600">Correspondant</span>
+                                            <span className="font-medium">{displayData.correspondant}</span>
+                                        </p>
+                                        <p className="flex items-center justify-between py-2 border-b">
+                                            <span className="text-gray-600">Date dépôt</span>
+                                            <span className="font-medium">{displayData.date_depot}</span>
+                                        </p>
+                                    </>
+                                )}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

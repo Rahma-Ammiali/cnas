@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Side from '../components/Side';
+import { FiEdit, FiSave, FiCheck, FiPrinter, FiArrowLeft } from 'react-icons/fi';
 
 const SuiviPedagogique = () => {
   const { id } = useParams();
@@ -113,10 +114,10 @@ const SuiviPedagogique = () => {
 
   const StatutSelect = ({ field, value }) => {
     if (!isEditing) return (
-      <span className={`px-3 py-1 rounded-full text-white text-sm font-medium ${
-        value === 'Amélioration' ? 'bg-green-500' :
-        value === 'Stagnation' ? 'bg-yellow-500' :
-        value === 'Régression' ? 'bg-red-500' : 'bg-gray-400'
+      <span className={`px-3 py-1 rounded-full text-white text-sm font-medium shadow-sm ${
+        value === 'Amélioration' ? 'bg-gradient-to-r from-green-500 to-green-600' :
+        value === 'Stagnation' ? 'bg-gradient-to-r from-yellow-500 to-yellow-600' :
+        value === 'Régression' ? 'bg-gradient-to-r from-red-500 to-red-600' : 'bg-gray-400'
       }`}>
         {value || 'Non évalué'}
       </span>
@@ -126,7 +127,7 @@ const SuiviPedagogique = () => {
       <select
         value={value || ''}
         onChange={(e) => handleChange(e, `statut_${field}`)}
-        className="border border-gray-300 rounded-lg px-3 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        className="border border-gray-300 rounded-lg px-3 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm hover:shadow transition-all duration-200"
       >
         <option value="">Sélectionner</option>
         <option value="Amélioration">Amélioration</option>
@@ -138,8 +139,8 @@ const SuiviPedagogique = () => {
 
   const ObservationSection = ({ title, obsField, statutField }) => {
     return (
-      <div className="mb-6 p-4 bg-white rounded-lg shadow-sm border border-gray-100">
-        <div className="flex justify-between items-center mb-3">
+      <div className="mb-6 p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+        <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold text-gray-700">{title}</h3>
           <StatutSelect field={statutField} value={formData[`statut_${statutField}`]} />
         </div>
@@ -147,8 +148,8 @@ const SuiviPedagogique = () => {
           value={formData[obsField] || ''}
           onChange={(e) => handleChange(e, obsField)}
           disabled={!isEditing}
-          className={`w-full p-3 border rounded-lg min-h-[120px] focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-            isEditing ? 'bg-white border-gray-300' : 'bg-gray-50 border-gray-200'
+          className={`w-full p-4 border-2 rounded-xl min-h-[120px] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ${
+            isEditing ? 'bg-white border-blue-200 hover:border-blue-300' : 'bg-gray-50 border-gray-200'
           }`}
           placeholder={isEditing ? "Saisir vos observations..." : "Aucune observation"}
         />
@@ -158,10 +159,10 @@ const SuiviPedagogique = () => {
 
   return (
     <Side>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         {/* Header fixe */}
-        <div className="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-md">
+          <div className="max-w-7xl mx-auto px-6 py-4">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
               {/* Titre et bouton retour */}
               <div className="flex flex-col space-y-2">
@@ -170,9 +171,9 @@ const SuiviPedagogique = () => {
                 </h2>
                 <button
                   onClick={() => navigate(`/dossiers/${id}`)}
-                  className="text-blue-600 hover:text-blue-800 text-left"
+                  className="flex items-center text-blue-600 hover:text-blue-800 text-left transition-colors duration-200"
                 >
-                  ← Retour au dossier
+                  <FiArrowLeft className="mr-1" /> Retour au dossier
                 </button>
               </div>
 
@@ -180,37 +181,48 @@ const SuiviPedagogique = () => {
               <div className="flex flex-wrap gap-3">
                 <button
                   onClick={() => setIsEditing(!isEditing)}
-                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5 ${
+                    isEditing ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-blue-500 hover:bg-blue-600 text-white'
+                  }`}
                 >
-                  {isEditing ? 'Annuler' : 'Modifier'}
+                  {isEditing ? (
+                    <>
+                      <FiEdit /> Annuler
+                    </>
+                  ) : (
+                    <>
+                      <FiEdit /> Modifier
+                    </>
+                  )}
                 </button>
 
                 {isEditing ? (
                   <button
                     onClick={handleSubmit}
-                    className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                    className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5"
                   >
-                    Enregistrer
+                    <FiSave /> Enregistrer
                   </button>
                 ) : (
                   <button
                     onClick={handleValidation}
-                    className={`px-4 py-2 rounded ${
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5 ${
                       statut_validation === 'Validé'
                         ? 'bg-gray-500 cursor-not-allowed'
-                        : 'bg-blue-500 hover:bg-blue-600'
-                    } text-white`}
+                        : 'bg-blue-500 hover:bg-blue-600 text-white'
+                    }`}
                     disabled={statut_validation === 'Validé'}
                   >
+                    <FiCheck />
                     {statut_validation === 'Validé' ? '✓ Validé' : 'Valider'}
                   </button>
                 )}
 
                 <button
                   onClick={handlePrint}
-                  className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+                  className="flex items-center gap-2 bg-gray-600 hover:bg-gray-700 text-white px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5"
                 >
-                  Imprimer
+                  <FiPrinter /> Imprimer
                 </button>
               </div>
             </div>
@@ -218,7 +230,7 @@ const SuiviPedagogique = () => {
         </div>
 
         {/* Contenu défilable */}
-        <div className="max-w-7xl mx-auto px-4 py-6">
+        <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="space-y-6">
             <ObservationSection
               title="Adaptation de l'enfant à la CJE"

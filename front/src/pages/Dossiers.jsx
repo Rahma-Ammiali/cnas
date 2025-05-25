@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Side from '../components/Side'
+import { CiSearch } from "react-icons/ci";
+import { FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 
 const Dossiers = () => {
   const [classeSelectionnee, setClasseSelectionnee] = useState('Tous');
@@ -93,48 +95,80 @@ const Dossiers = () => {
 
   return (
     <Side>
-      <div className='relative'>
-        <h2 className='text-[35px] text-[#00428C] font-bold mb-4'>Dossiers Des Enfants</h2>
+      <div className="min-h-screen bg-gradient-to-b from-white to-[#f0f7ff] p-6">
+        <div className="max-w-7xl mx-auto space-y-8">
+          <h2 className="text-3xl font-bold text-center">
+            <span className="bg-gradient-to-r from-[#00428C] to-[#006DB8] text-transparent bg-clip-text">
+              Dossiers Des Enfants
+            </span>
+          </h2>
 
-        <div className='flex justify-between items-center mb-4'>
-          {/* Barre de recherche */}
-          <div className='relative w-1/3'>
-            <input
-              type="text"
-              placeholder="Rechercher par nom ou prénom..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <span className="absolute right-3 top-2.5">🔍</span>
+          <div className="bg-white rounded-xl p-6 shadow-[0_10px_30px_rgba(8,_112,_184,_0.2)]">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+              {/* Barre de recherche */}
+              <div className="relative w-full md:w-1/3">
+                <input
+                  type="text"
+                  placeholder="Rechercher par nom ou prénom..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full px-6 py-4 bg-[#DAEAF4] rounded-lg 
+                    text-[#00428C] placeholder-[#00428C]/50
+                    focus:outline-none focus:ring-2 focus:ring-[#006DB8] 
+                    transition-all duration-300
+                    pr-12"
+                />
+                <CiSearch className="absolute right-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-[#00428C]" />
+              </div>
+
+              {/* Menu de tri */}
+              <div className="flex gap-4 items-center">
+                <span className="text-[#00428C] font-medium">Trier par:</span>
+                <button
+                  onClick={() => handleSort('nom')}
+                  className={`
+                    px-4 py-2 rounded-lg flex items-center gap-2
+                    transition-all duration-300
+                    ${sortBy === 'nom' 
+                      ? 'bg-[#00428C] text-white shadow-md'
+                      : 'bg-[#DAEAF4] text-[#00428C] hover:bg-[#00428C]/10'
+                    }
+                  `}
+                >
+                  Nom
+                  {sortBy === 'nom' && (
+                    sortOrder === 'asc' ? <FaSortUp /> : <FaSortDown />
+                  )}
+                </button>
+                <button
+                  onClick={() => handleSort('age')}
+                  className={`
+                    px-4 py-2 rounded-lg flex items-center gap-2
+                    transition-all duration-300
+                    ${sortBy === 'age' 
+                      ? 'bg-[#00428C] text-white shadow-md'
+                      : 'bg-[#DAEAF4] text-[#00428C] hover:bg-[#00428C]/10'
+                    }
+                  `}
+                >
+                  Âge
+                  {sortBy === 'age' && (
+                    sortOrder === 'asc' ? <FaSortUp /> : <FaSortDown />
+                  )}
+                </button>
+              </div>
+            </div>
           </div>
 
-          {/* Menu de tri */}
-          <div className='flex gap-4 items-center'>
-            <span className='text-gray-700'>Trier par:</span>
+          <div className="flex gap-6 items-center justify-center bg-white rounded-lg p-4 shadow-md">
             <button
-              onClick={() => handleSort('nom')}
-              className={`px-4 py-2 rounded ${
-                sortBy === 'nom' ? 'bg-blue-500 text-white' : 'bg-gray-200'
-              }`}
-            >
-              Nom {sortBy === 'nom' && (sortOrder === 'asc' ? '↑' : '↓')}
-            </button>
-            <button
-              onClick={() => handleSort('age')}
-              className={`px-4 py-2 rounded ${
-                sortBy === 'age' ? 'bg-blue-500 text-white' : 'bg-gray-200'
-              }`}
-            >
-              Âge {sortBy === 'age' && (sortOrder === 'asc' ? '↑' : '↓')}
-            </button>
-          </div>
-        </div>
-
-        <div>
-          <div className='w-[100%] flex gap-5 mb-3'>
-            <button
-              className={`${classeSelectionnee === 'Tous' ? 'text-[#006DB8] font-bold text-xl decoration-solid underline' : 'text-gray-500 text-xl'} cursor-pointer`}
+              className={`
+                px-4 py-2 rounded-lg transition-all duration-300
+                ${classeSelectionnee === 'Tous' 
+                  ? 'bg-[#00428C] text-white font-medium shadow-md'
+                  : 'text-[#00428C] hover:bg-[#00428C]/10'
+                }
+              `}
               onClick={() => setClasseSelectionnee('Tous')}
             >
               Tous
@@ -142,48 +176,63 @@ const Dossiers = () => {
             {['Petite Section', 'Moyenne Section', 'Grande Section'].map(classe => (
               <button
                 key={classe}
-                className={`${classeSelectionnee === classe ? 'text-[#006DB8] font-bold text-xl decoration-solid underline' : 'text-gray-500 text-xl'} cursor-pointer`}
+                className={`
+                  px-4 py-2 rounded-lg transition-all duration-300
+                  ${classeSelectionnee === classe 
+                    ? 'bg-[#00428C] text-white font-medium shadow-md'
+                    : 'text-[#00428C] hover:bg-[#00428C]/10'
+                  }
+                `}
                 onClick={() => setClasseSelectionnee(classe)}
               >
                 {classe}
               </button>
             ))}
           </div>
-        </div>
 
-        <div className='overflow-hidden'>
-          <div className='max-h-[60vh] overflow-y-auto border-gray-200 border rounded-xl'>
-            <table className='w-full'>
-              <thead>
-                <tr className='border-gray-200 border shadow-md bg-[#FEFDFF]'>
-                  <th className='w-1/6 px-4 py-2'>Nom</th>
-                  <th className='w-1/6 px-4 py-2'>Prénom</th>
-                  <th className='w-1/6 px-4 py-2'>Âge</th>
-                  <th className='w-1/6 px-4 py-2'>Section</th>
-                  <th className='w-1/6 px-4 py-2'>Sexe</th>
-                  <th className='w-1/6 px-4 py-2'>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {getFilteredAndSortedEnfants().map((e) => (
-                  <tr key={`${e.id}-${e.date_depot}`} className='border border-gray-200 w-[100%] hover:bg-gray-50'>
-                    <td className='w-1/6 px-4 py-2 text-center'>{e.nom}</td>
-                    <td className='w-1/6 px-4 py-2 text-center'>{e.prenom}</td>
-                    <td className='w-1/6 px-4 py-2 text-center'>{calculerAge(e.date_naissance)}</td>
-                    <td className='w-1/6 px-4 py-2 text-center'>{e.classe}</td>
-                    <td className='w-1/6 px-4 py-2 text-center'>{e.sexe}</td>
-                    <td className='w-1/6 px-4 py-2 text-center'>
-                      <button
-                        onClick={() => handleDetails(e.id)}
-                        className='bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600'
-                      >
-                        Voir plus
-                      </button>
-                    </td>
+          <div className="bg-white rounded-2xl shadow-[0_10px_30px_rgba(8,_112,_184,_0.2)] overflow-hidden">
+            <div className="max-h-[60vh] overflow-y-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-[#00428C]/5">
+                    <th className="px-6 py-4 text-left text-sm font-medium text-[#00428C]">Nom</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-[#00428C]">Prénom</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-[#00428C]">Âge</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-[#00428C]">Section</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-[#00428C]">Sexe</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-[#00428C]">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {getFilteredAndSortedEnfants().map((e) => (
+                    <tr 
+                      key={`${e.id}-${e.date_depot}`}
+                      className="hover:bg-[#00428C]/5 transition-colors duration-200"
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{e.nom}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{e.prenom}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{calculerAge(e.date_naissance)}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{e.classe}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{e.sexe}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        <button
+                          onClick={() => handleDetails(e.id)}
+                          className="
+                            px-4 py-2 rounded-lg
+                            bg-[#00428C] text-white
+                            hover:bg-[#006DB8]
+                            transition-all duration-300
+                            transform hover:scale-105
+                          "
+                        >
+                          Voir plus
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

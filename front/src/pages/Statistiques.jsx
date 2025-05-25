@@ -11,6 +11,8 @@ import {
     Legend
 } from 'chart.js';
 import Side from '../components/Side';
+import { MdBarChart, MdPeople } from 'react-icons/md';
+import { FaVenusMars, FaChartBar } from 'react-icons/fa';
 
 ChartJS.register(
     CategoryScale,
@@ -52,8 +54,12 @@ const Statistiques = () => {
     if (loading) {
         return (
             <Side>
-                <div className="flex justify-center items-center h-[80vh]">
-                    <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#00428C]"></div>
+                <div className="min-h-screen bg-gradient-to-b from-white to-[#f0f7ff] p-6">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="flex items-center justify-center h-[60vh]">
+                            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#00428C]"></div>
+                        </div>
+                    </div>
                 </div>
             </Side>
         );
@@ -62,9 +68,13 @@ const Statistiques = () => {
     if (error) {
         return (
             <Side>
-                <div className="flex flex-col items-center justify-center h-[80vh]">
-                    <div className="text-red-500 text-xl mb-4">Une erreur est survenue</div>
-                    <div className="text-gray-600">{error}</div>
+                <div className="min-h-screen bg-gradient-to-b from-white to-[#f0f7ff] p-6">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="flex flex-col items-center justify-center h-[60vh] space-y-4">
+                            <div className="text-2xl font-bold text-red-500">Une erreur est survenue</div>
+                            <div className="text-gray-600">{error}</div>
+                        </div>
+                    </div>
                 </div>
             </Side>
         );
@@ -73,8 +83,12 @@ const Statistiques = () => {
     if (!stats) {
         return (
             <Side>
-                <div className="flex justify-center items-center h-[80vh]">
-                    <div className="text-gray-600">Aucune donnée disponible</div>
+                <div className="min-h-screen bg-gradient-to-b from-white to-[#f0f7ff] p-6">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="flex items-center justify-center h-[60vh]">
+                            <div className="text-xl text-gray-600">Aucune donnée disponible</div>
+                        </div>
+                    </div>
                 </div>
             </Side>
         );
@@ -95,7 +109,7 @@ const Statistiques = () => {
         labels: stats.parAge.map(item => item.tranche_age),
         datasets: [
             {
-                label: 'Nombre d\'enfants par section',
+                label: "Nombre d'enfants par section",
                 data: stats.parAge.map(item => item.nombre),
                 backgroundColor: ['#FF9F40', '#4BC0C0', '#9966FF'],
                 borderColor: ['#FF9F40', '#4BC0C0', '#9966FF'],
@@ -106,63 +120,98 @@ const Statistiques = () => {
 
     return (
         <Side>
-            <div className="p-2">
-                <h1 className="text-2xl font-bold text-[#00428C] mb-6">
-                    Statistiques de la Crèche
-                </h1>
-                
-                <div className="bg-white rounded-lg shadow-lg border border-gray-100 p-4 mb-6">
-                    <h2 className="text-xl font-semibold text-[#00428C]">
-                        Nombre total d'enfants inscrits : {stats.totalEnfants}
-                    </h2>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                    <div className="bg-white rounded-lg shadow-lg p-4 border border-gray-100" >
-                        <h2 className="text-lg font-semibold text-[#00428C] mb-4">
-                            Répartition par genre
-                        </h2>
-                        <div className="h-[250px] flex items-center justify-center">
-                            <Pie 
-                                data={sexeData} 
-                                options={{
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    plugins: {
-                                        legend: {
-                                            position: 'bottom'
-                                        }
-                                    }
-                                }} 
-                            />
+            <div className="min-h-screen bg-gradient-to-b from-white to-[#f0f7ff] p-6">
+                <div className="max-w-7xl mx-auto space-y-8">
+                    <h1 className="text-3xl font-bold text-center">
+                        <span className="bg-gradient-to-r from-[#00428C] to-[#006DB8] text-transparent bg-clip-text">
+                            Statistiques de la Crèche
+                        </span>
+                    </h1>
+                    
+                    <div className="bg-white rounded-2xl p-8 shadow-[0_10px_30px_rgba(8,_112,_184,_0.2)]">
+                        <div className="flex items-center gap-3">
+                            <MdPeople className="w-8 h-8 text-[#00428C]" />
+                            <h2 className="text-2xl font-bold text-[#00428C]">
+                                Nombre total d'enfants inscrits : {stats.totalEnfants}
+                            </h2>
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-lg shadow-lg p-4 border border-gray-100">
-                        <h2 className="text-lg font-semibold text-[#00428C] mb-4">
-                            Répartition par section
-                        </h2>
-                        <div className="h-[250px] flex items-center justify-center">
-                            <Bar 
-                                data={ageData}
-                                options={{
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true,
-                                            ticks: {
-                                                stepSize: 1
+                    <div className="grid md:grid-cols-2 gap-8">
+                        <div className="bg-white rounded-2xl p-8 shadow-[0_10px_30px_rgba(8,_112,_184,_0.2)]">
+                            <div className="flex items-center gap-3 mb-6">
+                                <FaVenusMars className="w-6 h-6 text-[#00428C]" />
+                                <h2 className="text-xl font-semibold text-[#00428C]">
+                                    Répartition par genre
+                                </h2>
+                            </div>
+                            <div className="h-[300px] flex items-center justify-center">
+                                <Pie 
+                                    data={sexeData} 
+                                    options={{
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        plugins: {
+                                            legend: {
+                                                position: 'bottom',
+                                                labels: {
+                                                    font: {
+                                                        size: 14
+                                                    },
+                                                    padding: 20
+                                                }
                                             }
                                         }
-                                    },
-                                    plugins: {
-                                        legend: {
-                                            display: false
+                                    }} 
+                                />
+                            </div>
+                        </div>
+
+                        <div className="bg-white rounded-2xl p-8 shadow-[0_10px_30px_rgba(8,_112,_184,_0.2)]">
+                            <div className="flex items-center gap-3 mb-6">
+                                <FaChartBar className="w-6 h-6 text-[#00428C]" />
+                                <h2 className="text-xl font-semibold text-[#00428C]">
+                                    Répartition par section
+                                </h2>
+                            </div>
+                            <div className="h-[300px] flex items-center justify-center">
+                                <Bar 
+                                    data={ageData}
+                                    options={{
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true,
+                                                ticks: {
+                                                    stepSize: 1,
+                                                    font: {
+                                                        size: 12
+                                                    }
+                                                },
+                                                grid: {
+                                                    color: 'rgba(0, 66, 140, 0.1)'
+                                                }
+                                            },
+                                            x: {
+                                                ticks: {
+                                                    font: {
+                                                        size: 12
+                                                    }
+                                                },
+                                                grid: {
+                                                    display: false
+                                                }
+                                            }
+                                        },
+                                        plugins: {
+                                            legend: {
+                                                display: false
+                                            }
                                         }
-                                    }
-                                }}
-                            />
+                                    }}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

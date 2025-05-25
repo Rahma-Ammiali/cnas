@@ -137,32 +137,51 @@ const EnAttente = () => {
 
   return (
     <Side>
-      <div className='relative'>
-        <h2 className='text-[35px] text-[#00428C] font-bold mb-4'>Validation des préinscriptions</h2>
-        
-        {/* Message de confirmation/erreur */}
-        {message.text && (
-          <div className={`fixed top-4 right-4 p-4 rounded-lg shadow-lg ${
-            message.type === 'success' ? 'bg-green-500' : 'bg-red-500'
-          } text-white z-50 animate-fade-in-out`}>
-            {message.text}
-          </div>
-        )}
+      <div className="min-h-screen bg-gradient-to-b from-white to-[#f0f7ff] p-6">
+        <div className="max-w-7xl mx-auto space-y-8">
+          <h2 className="text-3xl font-bold text-center mb-8">
+            <span className="bg-gradient-to-r from-[#00428C] to-[#006DB8] text-transparent bg-clip-text">
+              Validation des préinscriptions
+            </span>
+          </h2>
+          
+          {message.text && (
+            <div className={`
+              fixed top-4 right-4 p-4 rounded-lg shadow-lg
+              ${message.type === 'success' ? 'bg-green-500' : 'bg-red-500'}
+              text-white z-50 transform transition-all duration-300
+              animate-fade-in-out
+            `}>
+              {message.text}
+            </div>
+          )}
 
-        <div className='w-[80vw]'>
-          <div className='flex justify-between'>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {placesRestantes.map(classe => (
-              <div key={classe.nom_classe} className='border border-gray-200 shadow-md bg-[white] w-[20vw] h-[6vw] shadow-md rounded-xl p-4 mb-4 text-[#006DB8] font-bold'>
-                <h3>{classe.nom_classe}</h3>
-                <p>{classe.nbr_places} places restantes</p>
+              <div key={classe.nom_classe} className="
+                bg-white rounded-xl p-6
+                shadow-[0_10px_30px_rgba(8,_112,_184,_0.2)]
+                transform hover:scale-[1.02] transition-all duration-300
+              ">
+                <h3 className="text-xl font-bold text-[#00428C] mb-2">
+                  {classe.nom_classe}
+                </h3>
+                <p className="text-[#006DB8] text-lg">
+                  {classe.nbr_places} places restantes
+                </p>
               </div>
             ))}
           </div>
-        </div>
-        <div>
-          <div className='w-[100%] flex gap-5 mb-3'>
+
+          <div className="flex gap-6 items-center justify-center bg-white rounded-lg p-4 shadow-md">
             <button
-              className={`${classeSelectionnee === 'Tous' ? 'text-[#006DB8] font-bold text-xl decoration-solid underline' : 'text-gray-500 text-xl'} cursor-pointer`}
+              className={`
+                px-4 py-2 rounded-lg transition-all duration-300
+                ${classeSelectionnee === 'Tous' 
+                  ? 'bg-[#00428C] text-white font-medium shadow-md'
+                  : 'text-[#00428C] hover:bg-[#00428C]/10'
+                }
+              `}
               onClick={() => setClasseSelectionnee('Tous')}
             >
               Tous
@@ -170,69 +189,108 @@ const EnAttente = () => {
             {['Petite section', 'Moyenne section', 'Grande section'].map(classe => (
               <button
                 key={classe}
-                className={`${classeSelectionnee === classe ? 'text-[#006DB8] font-bold text-xl decoration-solid underline' : 'text-gray-500 text-xl'} cursor-pointer`}
+                className={`
+                  px-4 py-2 rounded-lg transition-all duration-300
+                  ${classeSelectionnee === classe 
+                    ? 'bg-[#00428C] text-white font-medium shadow-md'
+                    : 'text-[#00428C] hover:bg-[#00428C]/10'
+                  }
+                `}
                 onClick={() => setClasseSelectionnee(classe)}
               >
                 {classe}
               </button>
             ))}
           </div>
-        </div>
 
-        <div className='overflow-hidden'>
-          <div className='max-h-[60vh] overflow-y-auto border-gray-200 border rounded-xl'>
-            <table className='w-full'>
-              <thead>
-                <tr className='border-gray-200 border shadow-md bg-[#FEFDFF]'>
-                  <th className='w-1/6 px-4 py-2'>Nom</th>
-                  <th className='w-1/6 px-4 py-2'>Prénom</th>
-                  <th className='w-1/6 px-4 py-2'>Âge</th>
-                  <th className='w-1/6 px-4 py-2'>Classe</th>
-                  <th className='w-1/6 px-4 py-2'>Statut</th>
-                  <th className='w-1/6 px-4 py-2'>Voir plus</th>
-                  <th className='w-1/6 px-4 py-2'>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {getFilteredPreinscriptions().map((e) => (
-                  <tr key={e.id_preinscription} className='border border-gray-200'>
-                    <td className='w-1/6 px-4 py-2 text-center'>{e.nom}</td>
-                    <td className='w-1/6 px-4 py-2 text-center'>{e.prenom}</td>
-                    <td className='w-1/6 px-4 py-2 text-center'>{calculerAge(e.date_naissance)}</td>
-                    <td className='w-1/6 px-4 py-2 text-center'>{e.classe}</td>
-                    <td className='w-1/6 px-4 py-2 text-center'>{status[e.id_preinscription]}</td>
-                    <td className='w-1/6 px-4 py-2 text-center'>
-                      <button
-                        className='bg-blue-400 hover:bg-blue-500 text-white px-3 py-1 rounded shadow-sm cursor-pointer'
-                        onClick={() => handleVoirPlus(e.id_preinscription)}>
-                        Voir plus
-                      </button>
-                    </td>
-                    <td className='w-1/6 px-4 py-2 text-center'>
-                      {status[e.id_preinscription] === "validé" ? (
-                        <button
-                          className='text-white px-3 py-1 rounded shadow-sm bg-green-300 cursor-not-allowed'
-                        >
-                          Validé
-                        </button>
-                      ) : status[e.id_preinscription] === "saturé" ? (
-                        <button
-                          className='text-white px-3 py-1 rounded shadow-sm opacity-50 bg-gray-800 cursor-not-allowed'
-                        >
-                          Saturé
-                        </button>
-                      ) : (
-                        <button
-                          className='bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded shadow-sm cursor-pointer'
-                          onClick={() => handleValidation(e.id_preinscription, e.classe, e)}>
-                          Valider
-                        </button>
-                      )}
-                    </td>
+          <div className="bg-white rounded-2xl shadow-[0_10px_30px_rgba(8,_112,_184,_0.2)] overflow-hidden">
+            <div className="max-h-[60vh] overflow-y-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="bg-[#00428C]/5">
+                    <th className="px-6 py-4 text-left text-sm font-medium text-[#00428C]">Nom</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-[#00428C]">Prénom</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-[#00428C]">Âge</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-[#00428C]">Classe</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-[#00428C]">Statut</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-[#00428C]">Voir plus</th>
+                    <th className="px-6 py-4 text-left text-sm font-medium text-[#00428C]">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {getFilteredPreinscriptions().map(e => (
+                    <tr 
+                      key={e.id_preinscription}
+                      className="hover:bg-[#00428C]/5 transition-colors duration-200"
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{e.nom}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{e.prenom}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{calculerAge(e.date_naissance)}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{e.classe}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        <span className={`
+                          px-3 py-1 rounded-full text-xs font-medium
+                          ${status[e.id_preinscription] === "validé" 
+                            ? 'bg-green-100 text-green-800'
+                            : status[e.id_preinscription] === "saturé"
+                            ? 'bg-red-100 text-red-800'
+                            : 'bg-yellow-100 text-yellow-800'
+                          }
+                        `}>
+                          {status[e.id_preinscription]}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        <button
+                          onClick={() => handleVoirPlus(e.id_preinscription)}
+                          className="
+                            px-4 py-2 rounded-lg
+                            bg-[#00428C] text-white
+                            hover:bg-[#006DB8]
+                            transition-all duration-300
+                            transform hover:scale-105
+                          "
+                        >
+                          Voir plus
+                        </button>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
+                        {status[e.id_preinscription] === "validé" ? (
+                          <button className="
+                            px-4 py-2 rounded-lg
+                            bg-green-500 text-white
+                            opacity-50 cursor-not-allowed
+                          ">
+                            Validé
+                          </button>
+                        ) : status[e.id_preinscription] === "saturé" ? (
+                          <button className="
+                            px-4 py-2 rounded-lg
+                            bg-red-500 text-white
+                            opacity-50 cursor-not-allowed
+                          ">
+                            Saturé
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handleValidation(e.id_preinscription, e.classe, e)}
+                            className="
+                              px-4 py-2 rounded-lg
+                              bg-green-500 text-white
+                              hover:bg-green-600
+                              transition-all duration-300
+                              transform hover:scale-105
+                            "
+                          >
+                            Valider
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         {selectedId && (
