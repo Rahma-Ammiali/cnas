@@ -106,7 +106,7 @@ const SuiviPedagogique = () => {
 
   const handleChange = (e, field) => {
     const { value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: value
     }));
@@ -126,7 +126,7 @@ const SuiviPedagogique = () => {
     return (
       <select
         value={value || ''}
-        onChange={(e) => handleChange(e, `statut_${field}`)}
+        onChange={(e) => handleChange(e,field)}
         className="border border-gray-300 rounded-lg px-3 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 shadow-sm hover:shadow transition-all duration-200"
       >
         <option value="">Sélectionner</option>
@@ -142,7 +142,11 @@ const SuiviPedagogique = () => {
       <div className="mb-6 p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold text-gray-700">{title}</h3>
-          <StatutSelect field={statutField} value={formData[`statut_${statutField}`]} />
+          <StatutSelect
+            field={statutField}
+            value={formData[statutField] || ''}
+/>
+
         </div>
         <textarea
           value={formData[obsField] || ''}
@@ -153,6 +157,7 @@ const SuiviPedagogique = () => {
           }`}
           placeholder={isEditing ? "Saisir vos observations..." : "Aucune observation"}
         />
+
       </div>
     );
   };
@@ -235,37 +240,37 @@ const SuiviPedagogique = () => {
             <ObservationSection
               title="Adaptation de l'enfant à la CJE"
               obsField="obs_adaptation"
-              statutField="adaptation"
+              statutField="statut_adaptation"
             />
             
             <ObservationSection
               title="Relation aux autres enfants (socialisation)"
               obsField="obs_socialisation"
-              statutField="socialisation"
+              statutField="statut_socialisation"
             />
             
             <ObservationSection
               title="Acquisition de l'autonomie dans la vie pratique"
               obsField="obs_autonomie"
-              statutField="autonomie"
+              statutField="statut_autonomie"
             />
             
             <ObservationSection
               title="Acquisition des enseignements en pré mathématiques"
               obsField="obs_premath"
-              statutField="premath"
+              statutField="statut_premath"
             />
             
             <ObservationSection
               title="Acquisition des enseignements en pré lecture"
               obsField="obs_prelecture"
-              statutField="prelecture"
+              statutField="statut_prelecture"
             />
             
             <ObservationSection
               title="Acquisition des enseignements en pré écriture"
               obsField="obs_preecriture"
-              statutField="preecriture"
+              statutField="statut_preecriture"
             />
           </div>
         </div>

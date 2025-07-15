@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require("cors");
-const db = require("./db");
 const dotenv = require("dotenv");
-const path = require('path');
+dotenv.config();
+const app = express();
 
 // Import des routes
 const parentRoutes = require("./routes/parentRoutes");
@@ -16,38 +16,21 @@ const dossiersRoutes = require("./routes/dossiersRoutes");
 const suiviPedagogiqueRoutes = require("./routes/suiviPedagogiqueRoutes");
 const statistiquesRoutes = require("./routes/statistiquesRoutes");
 const piecesJointesRoutes = require("./routes/piecesjointesRoutes");
+const authRoutes = require("./routes/authRoutes")
 
-dotenv.config();
-const app = express();
+
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Route de login
-app.post('/login', (req, res) => {
-  const { numSecurite, password } = req.body;
-  const query = 'SELECT * FROM login WHERE num_securite = ? AND password = ?';
-  
-  db.query(query, [numSecurite, password], (err, results) => {
-    if (err) {
-      console.error('Erreur de connexion:', err);
-      return res.status(500).json({ message: "Erreur de connexion" });
-    }
-    
-    if (results.length > 0) {
-      res.json({ message: "Logged in successfully" });
-    } else {
-      res.json({ message: "Login failed" });
-    }
-  });
-});
 
 // Servir les fichiers statiques
 app.use('/uploads', express.static('uploads'));
 
 // Configuration des routes
+app.use("/api/login",authRoutes);
 app.use("/api/parents", parentRoutes);
 app.use("/api/enfants", enfantRoutes);
 app.use("/api/preinscription", preinscriptionRoutes);

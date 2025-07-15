@@ -5,6 +5,17 @@ import { IoArrowBack, IoPrint } from 'react-icons/io5';
 import { FaChild, FaUserFriends, FaFileAlt, FaBrain } from 'react-icons/fa';
 
 const DossierDetails = () => {
+  const role = JSON.parse(localStorage.getItem("user"))?.role;
+
+  useEffect(() => {
+  const user = JSON.parse(localStorage.getItem("user"))
+  if (user) {
+    console.log("👤 Rôle actuel :", user.role);
+  } else {
+    console.log("❌ Aucun utilisateur trouvé");
+  }
+}, []);
+
   const { id } = useParams();
   const navigate = useNavigate();
   const [dossier, setDossier] = useState(null);
@@ -254,7 +265,8 @@ const DossierDetails = () => {
             </div>
 
             <div className="flex justify-end gap-4">
-              <button
+              {(role === "educatrice" || role === "directrice" || role === "educatrice en chef" || role === "agent_cnas" ) && (
+                <button
                 onClick={() => navigate(`/pieces-jointes/${id}`)}
                 className="
                   px-6 py-3 rounded-lg
@@ -268,7 +280,10 @@ const DossierDetails = () => {
                 <FaFileAlt className="w-5 h-5" />
                 Pièces jointes
               </button>
-              <button
+              )}
+              
+              {(role === "educatrice" || role === "directrice" || role === "educatrice en chef" || role === "agent_cnas" ) && (
+                 <button
                 onClick={() => navigate(`/suivi-pedagogique/${id}`)}
                 className="
                   px-6 py-3 rounded-lg
@@ -282,6 +297,8 @@ const DossierDetails = () => {
                 <FaBrain className="w-5 h-5" />
                 Suivi Psychopédagogique
               </button>
+              )}
+             
             </div>
           </div>
         </div>

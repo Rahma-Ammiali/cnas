@@ -1,34 +1,67 @@
-import React, { useState } from 'react'
+import React, {useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import logo from '../assets/logo.png'
 import { FaUserAlt, FaLock } from 'react-icons/fa'
 
 const Log = () => {
-  const [numSecurite, setNumSecurite] = useState("")
+  const [num_agent, setNumAgent] = useState("")
   const [password, setPassword] = useState("")
+  const [error,setError]=useState(null)
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
-    console.log('numSecurite:', numSecurite);
-    console.log('password:', password);
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios.post('http://localhost:5000/login',{numSecurite,password})
-    .then(res=>
-      {console.log(res.data)
-    if(res.data.message === "Logged in successfully"){
-      navigate("/Acceuil");
+    console.log("formulaire soumis!")
+    setError("")
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    
+    try{
+      const res = await fetch('http://localhost:5000/api/login',{
+        method:"POST",
+        headers:{"Content-Type" : "application/json"},
+        body: JSON.stringify({
+          num_agent:num_agent.trim(),
+          password:password.trim()}),
+      });
+      console.log("réponse brute : ",res)
+      const data = await res.json();
+      console.log("donnees recues : ",data)
+      if (!res.ok){
+        setError(data.message || "login failed");
+        return ;
+      }
+      if(res.ok){
+        localStorage.setItem("token",data.token);
+      localStorage.setItem("user",JSON.stringify({
+        role:data.user.role,
+        nom:data.user.nom,
+      }));
+      navigate("/acceuil");
+
+      }
+      
+      switch(data.user.role){
+        case "admin":
+        case "directrice" : 
+        case "secretaire":
+        case "educatrice" : 
+        case "educatrice en chef" :
+        case "econome" : 
+        case "agent_cnas" : 
+          await new Promise(resolve => setTimeout(resolve,100));
+          
+          navigate("/acceuil");
+          break ; 
+        default : 
+          navigate("/");
+      }
+    }catch (err) {
+      setError("erreur reseau");
     }
-    else{
-      alert("wrong password or number ")
-      console.log("login failed ", res.data)
-    }
-  })
-    .catch(err=>{
-      console.log(err)
-      alert("wrong password or number ")
-    })
   }
+      
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-[#f0f7ff] flex items-center justify-center p-6">
@@ -50,13 +83,13 @@ const Log = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <label className="text-sm text-[#00428C]/70 font-medium block">
-                Numéro de sécurité
+                Numéro d'agent
               </label>
               <div className="relative">
                 <input
                   type="text"
-                  value={numSecurite}
-                  onChange={(e) => setNumSecurite(e.target.value)}
+                  value={num_agent}
+                  onChange={(e) => setNumAgent(e.target.value)}
                   className="
                     w-full px-6 py-4 bg-[#DAEAF4] rounded-lg
                     text-[#00428C] placeholder-[#00428C]/50
@@ -94,17 +127,17 @@ const Log = () => {
 
             <button
               type="submit"
-              className="
+              className={`
                 w-full px-6 py-4 rounded-lg
                 bg-[#00428C] text-white
                 hover:bg-[#006DB8]
                 transition-all duration-300
                 transform hover:scale-105
-                font-medium
-              "
+                font-medium `}
             >
-              Se connecter
+             Se connecter
             </button>
+            {error && <p style = {{color : "red"}} >{error}</p>}
           </form>
         </div>
       </div>

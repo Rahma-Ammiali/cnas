@@ -1,4 +1,3 @@
-import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { IoLogOutOutline } from "react-icons/io5";
@@ -16,34 +15,21 @@ const Side = ({children}) => {
     const [isDarkMode, setIsDarkMode] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
+    
+    const user = JSON.parse(localStorage.getItem("user"));
+const userRole = user?.role;
+
     const Menus = [
-        {title: "Acceuil", icone: <GoHome className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Acceuil"},
-        {title: "Préinscription", icone: <FaRegPenToSquare className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Preinscription"},
-        {title: "Liste D'attente", icone: <CiStopwatch className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/EnAttente"},
-        {title: "Dossiers", icone: <BsFiles className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Dossiers"},
-        {title: "Nouveau Utilisateur", icone: <CiUser className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Utilisateur"},
-        {title: "Evenements et Places", icone: <CiCalendarDate className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Evenement"},
-        {title: "Statistiques", icone: <MdBarChart className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/statistiques"},
+        {title: "Acceuil", icone: <GoHome className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Acceuil" , roles:["admin","directrice","secretaire","educatrice","educatrice en chef","econome","agent_cnas"]},
+        {title: "Préinscription", icone: <FaRegPenToSquare className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Preinscription", roles :["secretaire"] },
+        {title: "Liste D'attente", icone: <CiStopwatch className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/EnAttente", roles : ["directrice"]},
+        {title: "Dossiers", icone: <BsFiles className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Dossiers" , roles:["directrice","secretaire","educatrice","educatrice en chef","agent_cnas"] },
+        {title: "Nouveau Utilisateur", icone: <CiUser className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Utilisateur" , roles :["admin"] },
+        {title: "Evenements et Places", icone: <CiCalendarDate className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/Evenement" , roles :["directrice"]},
+        {title: "Statistiques", icone: <MdBarChart className='w-5 h-5 text-[#00428C] transition-transform group-hover:scale-110'/>, path: "/statistiques" , roles :["directrice","agent_cnas"]},
 
     ];
-                            {/* <button className={`
-                            w-full px-3 py-2.5 rounded-lg
-                            flex items-center gap-x-4
-                            text-red-600 hover:bg-red-50
-                            transition-all duration-300
-                            group
-                            ${!open && 'justify-center'}
-                        `}>
-                            <IoLogOutOutline className='w-5 h-5 transition-transform group-hover:scale-110'/>
-                            <span className={`
-                                font-medium text-sm
-                                transition-all duration-300
-                                whitespace-nowrap
-                                ${!open && 'hidden'}
-                            `}>
-                                Déconnexion
-                            </span>
-                        </button> */}
+    const filteredMenus = Menus.filter(menu => menu.roles.includes(userRole));
 
     return (
         <div className='flex min-h-screen bg-gray-50'>
@@ -102,7 +88,7 @@ const Side = ({children}) => {
                     <div className='h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent my-4'></div>
 
                     <ul className='flex-1 space-y-2'>
-                        {Menus.map((menu, index) => (
+                        {filteredMenus.map((menu, index) => (
                             <Link to={menu.path} key={index}>
                                 <li className={`
                                     group
@@ -141,6 +127,7 @@ const Side = ({children}) => {
                         <button 
                             onClick={() => setIsDarkMode(!isDarkMode)}
                             className={`
+                                cursor-pointer
                                 w-full px-3 py-2.5 rounded-lg
                                 flex items-center gap-x-4
                                 text-[#00428C] hover:bg-[#00428C]/5
@@ -165,6 +152,7 @@ const Side = ({children}) => {
                                 <>
                                     <FaMoon className='w-5 h-5 transition-transform group-hover:scale-110'/>
                                     <span className={`
+                                        
                                         font-medium text-sm
                                         transition-all duration-300
                                         whitespace-nowrap
@@ -176,34 +164,17 @@ const Side = ({children}) => {
                             )}
                         </button>
 
-                        {/* <Link to="/" className={`
-                            w-full px-3 py-2.5 rounded-lg
-                            flex items-center gap-x-4
-                            text-red-600 hover:bg-red-50
-                            transition-all duration-300
-                            group
-                            ${!open && 'justify-center'}
-                        `}>
-                            <IoLogOutOutline className='w-5 h-5 transition-transform group-hover:scale-110'/>
-                            <span className={`
-                                font-medium text-sm
-                                transition-all duration-300
-                                whitespace-nowrap
-                                ${!open && 'hidden'}
-                            `}>
-                                Déconnexion
-                            </span>
-                        </Link>
-                         */}
                          <button 
                          onClick={()=>{
                             const confirmLogout = window.confirm("voulez-vous vraiment vous déconnecter ?")
                             if(confirmLogout) {
-                                navigate("/");
+                                localStorage.removeItem("token");
+                                localStorage.removeItem("user");
+                                window.location.href="/";
                             }
                         }}
                         className={`
-                        w-full px-3 py-2.5 rounded-lg
+                        w-full px-3 py-2.5 rounded-lg cursor-pointer 
                         flex items-center gap-x-4
                         text-red-600 hover:bg-red-100
                         transition-all duration-300
