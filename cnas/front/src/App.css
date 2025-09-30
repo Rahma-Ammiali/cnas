@@ -1,0 +1,16 @@
+@import "tailwindcss";
+/* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 0px; /* Make it invisible */
+  background: transparent;
+}
+
+/* Optional: Keep scrolling functional */
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: none; /* Hides scrollbar */
+}
